@@ -1,4 +1,4 @@
-<?php $events = $dashboard->getCalendar(); $new = $dashboard->getNews(); $atime = $dashboard->getAccessTime(date('Y-m-d'));?>
+<?php $events = $dashboard->getCalendar(); $new = $dashboard->getNews(); $atime = $dashboard->getAccessTime(date('Y-m-d')); $chart = $dashboard->getChart();?>
 <div class="card">
     <div class="card-header card-header-tabs card-header-primary">
         <div class="nav-tabs-navigation">
@@ -46,7 +46,7 @@
                                     <td><?=$time['dept_name']?></td>
                                     <td class="text-center">
                                         <?php 
-                                            $latetime = date('Y-m-d')." 08:30:59";
+                                            $latetime = date('Y-m-d')." 08:45:59";
                                             if(new DateTime($time['work_in']) < new DateTime($latetime)){
                                                 echo "<span class='badge badge-success'><i class='fa fa-check-circle'></i> เข้างานปกติ</span>";
                                             }else{ echo "<span class='badge badge-danger'><i class='fa fa-exclamation-circle'></i> เข้างานสาย</span>"; }

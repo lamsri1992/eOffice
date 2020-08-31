@@ -49,6 +49,9 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
 });
 calendar.render();
 
+// Set new default font family and font color to mimic Bootstrap's default styling
+Chart.defaults.global.defaultFontFamily = '"Kanit"';
+Chart.defaults.global.defaultFontColor = '#292b2c';
 var ctx = document.getElementById('leaveChart');
 var leaveChart = new Chart(ctx, {
     type: 'bar',
@@ -56,7 +59,7 @@ var leaveChart = new Chart(ctx, {
         labels: ['ลากิจ', 'ลาป่วย', 'ลาพักผ่อน', 'ลาคลอด'],
         datasets: [{
             label: 'สถิติการลา (ประจำวัน)',
-            data: [0, 0, 0, 0],
+            data: [<?=$chart['count_busy']?>, <?=$chart['count_sick']?>, <?=$chart['count_vacation']?>, <?=$chart['count_mate']?>],
             backgroundColor: 'orange',
             borderColor: 'orange',
             borderWidth: 1
