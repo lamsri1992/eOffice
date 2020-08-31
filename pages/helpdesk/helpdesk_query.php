@@ -11,10 +11,12 @@ if($op == 'add'){
     $empid = mysqli_real_escape_string($mysqli,$_REQUEST['empid']);
     $deptid = mysqli_real_escape_string($mysqli,$_REQUEST['deptid']);
     $title = mysqli_real_escape_string($mysqli,$_REQUEST['title']);
+    $start = date("Y-m-d h:i:s");
     $data = array(
         "help_create"=>$empid,
         "help_dept"=>$deptid,
-        "help_title"=>$title
+        "help_title"=>$title,
+        "help_date"=>$start,
     );
     insertSQL("tb_helpdesk",$data);
 
