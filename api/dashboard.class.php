@@ -64,6 +64,15 @@ Class dashboard {
         return $data;
     }
 
+    function getTime(){
+        $sql = "SELECT
+            (SELECT COUNT(*) FROM tb_worktime WHERE STR_TO_DATE(work_in, '%Y-%m-%d') = CURDATE() AND work_status = '0' GROUP BY work_status) AS count_late,
+            (SELECT COUNT(*) FROM tb_worktime WHERE STR_TO_DATE(work_in, '%Y-%m-%d') = CURDATE() AND work_status = '1' GROUP BY work_status) AS count_normal";
+        global $mysqli;
+        $res = $mysqli->query($sql) or die("SQL Error: <br>".$sql."<br>".$mysqli->error);
+        $data = $res->fetch_assoc();
+        return $data;
+        }
 }
 
 ?>

@@ -80,10 +80,10 @@ var ctx = document.getElementById('workChart');
 var workChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: ['ขาดงาน', 'เข้าสาย', 'เข้าปกติ'],
+        labels: ['เข้าสาย', 'เข้าปกติ'],
         datasets: [{
             label: 'สถิติการเข้างาน (ประจำวัน)',
-            data: [0, 0, 0],
+            data: [<?=$tchart['count_late']?>, <?=$tchart['count_normal']?>],
             backgroundColor: 'green',
             borderColor: 'green',
             borderWidth: 1
