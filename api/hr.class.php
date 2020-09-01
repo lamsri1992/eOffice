@@ -24,6 +24,15 @@ Class hr {
     return $data;    
     }
 
+    public function getEmployeeLeave($id){
+        $sql = "SELECT * FROM tb_employee_leave
+                WHERE emp_id = {$id}";
+        global $mysqli;
+        $res = $mysqli->query($sql);
+        $data = $res->fetch_assoc();
+    return $data;    
+    }
+
     public function getDepartment(){
         $sql = "SELECT * FROM tb_department";
         global $mysqli; $obj = array();

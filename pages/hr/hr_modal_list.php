@@ -2,13 +2,17 @@
 include ('../../config/database.php');
 include ('../../config/exdate.class.php');
 include ('../../api/hr.class.php');
+include ('../../api/leave.class.php');
 
 $id = $_REQUEST['id'];
 $mysqli = connect();
 $hr = new hr();
+$leaves = new leave();
 $data = $hr->editEmployee($id);
 $dep = $hr->getDepartment();
 $job = $hr->getJob();
+$leave = $hr->getEmployeeLeave($id);
+$resCount = $leaves->leaveCount($id);
 ?>
 <div class="modal-content">
     <div class="modal-body">
@@ -29,7 +33,7 @@ $job = $hr->getJob();
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#messages" data-toggle="tab">
+                                        <a class="nav-link" href="#leave" data-toggle="tab">
                                             <i class="material-icons">calendar_today</i> ข้อมูลวันลา
                                             <div class="ripple-container"></div>
                                         </a>
@@ -109,145 +113,117 @@ $job = $hr->getJob();
                                         </div>
                                     </div>
                                     <div class="form-group text-right">
-                                        <button type="submit" class="btn btn-info btn-sm"><i class="fa fa-save"></i>
+                                        <button type="submit" class="btn btn-info"><i class="fa fa-save"></i>
                                             บันทึกการแก้ไข
                                         </button>
                                     </div>
                                 </form>
                             </div>
-                            <div class="tab-pane" id="messages">
-                                <table class="table">
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                            checked>
-                                                        <span class="form-check-sign">
-                                                            <span class="check"></span>
-                                                        </span>
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>Flooded: One year later, assessing what was lost and what was found when
-                                                a ravaging rain swept through metro Detroit
-                                            </td>
-                                            <td class="td-actions text-right">
-                                                <button type="button" rel="tooltip" title="Edit Task"
-                                                    class="btn btn-primary btn-link btn-sm">
-                                                    <i class="material-icons">edit</i>
-                                                </button>
-                                                <button type="button" rel="tooltip" title="Remove"
-                                                    class="btn btn-danger btn-link btn-sm">
-                                                    <i class="material-icons">close</i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" value="">
-                                                        <span class="form-check-sign">
-                                                            <span class="check"></span>
-                                                        </span>
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>Sign contract for "What are conference organizers afraid of?"</td>
-                                            <td class="td-actions text-right">
-                                                <button type="button" rel="tooltip" title="Edit Task"
-                                                    class="btn btn-primary btn-link btn-sm">
-                                                    <i class="material-icons">edit</i>
-                                                </button>
-                                                <button type="button" rel="tooltip" title="Remove"
-                                                    class="btn btn-danger btn-link btn-sm">
-                                                    <i class="material-icons">close</i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div class="tab-pane" id="leave">
+                                <?php if(!isset($leave)){
+                                    echo "
+                                    <span class='badge badge-pill badge-danger'><i class='fa fa-exclamation-circle'></i> ยังไม่มีข้อมูลวันลา กรุณาบันทึกวันลา</span>
+                                    <form id='leaveAdd'>
+                                        <table class='table table-bordered table-striped table-sm text-center'>
+                                            <tr>
+                                                <th>ลาป่วย</th>
+                                                <th>ลากิจ</th>
+                                                <th>ลาพักผ่อน</th>
+                                                <th>ลาคลอดบุตร/ดูแลภรรยา</th>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <input name='sick' type='text' class='form-control input-md text-center' required>
+                                                </td>
+                                                <td>
+                                                    <input name='busy' type='text' class='form-control input-md text-center' required>
+                                                </td>
+                                                <td>
+                                                    <input name='vacation' type='text' class='form-control input-md text-center' required>
+                                                </td>
+                                                <td>
+                                                    <input name='mate' type='text' class='form-control input-md text-center' required>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <div class='text-right'>
+                                            <button type='submit' class='btn btn-info'><i class='fa fa-save'></i>
+                                                บันทึกการแก้ไข
+                                            </button>
+                                        </div>
+                                    </form>";
+                                }else{
+                                    echo "
+                                    <h5>สิทธิ์วันลา</h5>
+                                    <form id='leaveEdit'>
+                                        <table class='table table-bordered table-striped table-sm text-center'>
+                                            <tr>
+                                                <th>ลาป่วย</th>
+                                                <th>ลากิจ</th>
+                                                <th>ลาพักผ่อน</th>
+                                                <th>ลาคลอดบุตร/ดูแลภรรยา</th>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <input name='sick' type='text' class='form-control input-md text-center'
+                                                        value='".$leave['emp_leave_sick']."'>
+                                                </td>
+                                                <td>
+                                                    <input name='busy' type='text' class='form-control input-md text-center'
+                                                        value='".$leave['emp_leave_busy']."'>
+                                                </td>
+                                                <td>
+                                                    <input name='vacation' type='text' class='form-control input-md text-center'
+                                                        value='".$leave['emp_leave_vacation']."'>
+                                                </td>
+                                                <td>
+                                                    <input name='mate' type='text' class='form-control input-md text-center'
+                                                        value='".$leave['emp_leave_mate']."'>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <h5>สถิติการลา</h5>
+                                        <table class='table table-bordered table-striped table-sm text-center nowrap'>
+                                            <tr>
+                                                <th width='25%'>ลาป่วย</th>
+                                                <th width='25%'>ลากิจ</th>
+                                                <th width='25%'>ลาพักผ่อน</th>
+                                                <th width='25%'>ลาคลอดบุตร/ดูแลภรรยา</th>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span style='color:red;'>
+                                                        ".$resCount['sick']."
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span style='color:red;'>
+                                                        ".$resCount['busy']."
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span style='color:red;'>
+                                                        ".$resCount['vacation']."
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span style='color:red;'>
+                                                        ".$resCount['mate']."
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <div class='text-right'>
+                                            <button type='submit' class='btn btn-info'><i class='fa fa-save'></i>
+                                                บันทึกการแก้ไข
+                                            </button>
+                                        </div>
+                                    </form>";
+                                } 
+                                ?>
                             </div>
                             <div class="tab-pane" id="settings">
-                                <table class="table">
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" value="">
-                                                        <span class="form-check-sign">
-                                                            <span class="check"></span>
-                                                        </span>
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>Lines From Great Russian Literature? Or E-mails From My Boss?</td>
-                                            <td class="td-actions text-right">
-                                                <button type="button" rel="tooltip" title="Edit Task"
-                                                    class="btn btn-primary btn-link btn-sm">
-                                                    <i class="material-icons">edit</i>
-                                                </button>
-                                                <button type="button" rel="tooltip" title="Remove"
-                                                    class="btn btn-danger btn-link btn-sm">
-                                                    <i class="material-icons">close</i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                            checked>
-                                                        <span class="form-check-sign">
-                                                            <span class="check"></span>
-                                                        </span>
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>Flooded: One year later, assessing what was lost and what was found when
-                                                a ravaging rain swept through metro Detroit
-                                            </td>
-                                            <td class="td-actions text-right">
-                                                <button type="button" rel="tooltip" title="Edit Task"
-                                                    class="btn btn-primary btn-link btn-sm">
-                                                    <i class="material-icons">edit</i>
-                                                </button>
-                                                <button type="button" rel="tooltip" title="Remove"
-                                                    class="btn btn-danger btn-link btn-sm">
-                                                    <i class="material-icons">close</i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input" type="checkbox" value=""
-                                                            checked>
-                                                        <span class="form-check-sign">
-                                                            <span class="check"></span>
-                                                        </span>
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>Sign contract for "What are conference organizers afraid of?"</td>
-                                            <td class="td-actions text-right">
-                                                <button type="button" rel="tooltip" title="Edit Task"
-                                                    class="btn btn-primary btn-link btn-sm">
-                                                    <i class="material-icons">edit</i>
-                                                </button>
-                                                <button type="button" rel="tooltip" title="Remove"
-                                                    class="btn btn-danger btn-link btn-sm">
-                                                    <i class="material-icons">close</i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <span class="badge badge-dark"><i class="fa fa-code"></i> Developing...</span>
                             </div>
                         </div>
                     </div>
@@ -277,6 +253,74 @@ $('#frmEdit').on("submit", function(event) {
                     success: function(data) {
                         swal('Success!',
                             'แก้ไขข้อมูลแล้ว',
+                            'success', {
+                                closeOnClickOutside: false,
+                                closeOnEsc: false,
+                                buttons: false,
+                                timer: 3000,
+                            });
+                        window.setTimeout(function() {
+                            location.replace('?menu=e-Employee')
+                        }, 2000);
+                    }
+                });
+            }
+        });
+});
+
+// Add Employee Leave
+$('#leaveAdd').on("submit", function(event) {
+    event.preventDefault();
+    swal({
+            title: "เพิ่มข้อมูลวันลา ?",
+            text: "ยืนยันเพิ่มข้อมูลวันลาของ <?=$data['emp_barcode'].": ".$data['emp_name']?>",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((createCnf) => {
+            if (createCnf) {
+                $.ajax({
+                    url: "pages/hr/hr_query.php?op=addLeave&id=<?=$data['emp_id']?>",
+                    method: "POST",
+                    data: $('#leaveAdd').serialize(),
+                    success: function(data) {
+                        swal('Success!',
+                            'เพิ่มข้อมูลวันลาแล้ว',
+                            'success', {
+                                closeOnClickOutside: false,
+                                closeOnEsc: false,
+                                buttons: false,
+                                timer: 3000,
+                            });
+                        window.setTimeout(function() {
+                            location.replace('?menu=e-Employee')
+                        }, 2000);
+                    }
+                });
+            }
+        });
+});
+
+// Edit Employee Leave
+$('#leaveEdit').on("submit", function(event) {
+    event.preventDefault();
+    swal({
+            title: "แก้ไขข้อมูลวันลา ?",
+            text: "ยืนยันแก้ไขข้อมูลวันลาของ <?=$data['emp_barcode'].": ".$data['emp_name']?>",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((createCnf) => {
+            if (createCnf) {
+                $.ajax({
+                    url: "pages/hr/hr_query.php?op=editLeave&id=<?=$data['emp_id']?>",
+                    method: "POST",
+                    data: $('#leaveEdit').serialize(),
+                    success: function(data) {
+                        swal('Success!',
+                            'แก้ไขข้อมูลวันลาแล้ว',
                             'success', {
                                 closeOnClickOutside: false,
                                 closeOnEsc: false,

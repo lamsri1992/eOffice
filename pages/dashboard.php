@@ -59,7 +59,9 @@
                 </div>
                 <div class="container">
                     <h5 class="card-title"><i class="far fa-calendar"></i> ปฏิทินวันลา</h5>
-                    <div id="calendar"></div>
+                    <div class="col-lg-12">
+                        <div id="calendar"></div>
+                    </div>
                 </div>
             </div>
         </div>

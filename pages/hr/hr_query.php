@@ -56,4 +56,37 @@ if($op == 'edit'){
     );
     updateSQL("tb_employee",$data,"emp_id=$id");
 }
+
+// Add Leave Data 
+if($op == 'addLeave'){
+    $id = $_REQUEST['id'];
+    $sick = mysqli_real_escape_string($mysqli,$_REQUEST['sick']);
+    $busy = mysqli_real_escape_string($mysqli,$_REQUEST['busy']);
+    $vacation = mysqli_real_escape_string($mysqli,$_REQUEST['vacation']);
+    $mate = mysqli_real_escape_string($mysqli,$_REQUEST['mate']);
+    $data = array(
+        "emp_leave_sick"=>$sick,
+        "emp_leave_busy"=>$busy,
+        "emp_leave_vacation"=>$vacation,
+        "emp_leave_mate"=>$mate,
+        "emp_id"=>$id
+    );
+    insertSQL("tb_employee_leave",$data);
+}
+
+// Add Leave Data 
+if($op == 'editLeave'){
+    $id = $_REQUEST['id'];
+    $sick = mysqli_real_escape_string($mysqli,$_REQUEST['sick']);
+    $busy = mysqli_real_escape_string($mysqli,$_REQUEST['busy']);
+    $vacation = mysqli_real_escape_string($mysqli,$_REQUEST['vacation']);
+    $mate = mysqli_real_escape_string($mysqli,$_REQUEST['mate']);
+    $data = array(
+        "emp_leave_sick"=>$sick,
+        "emp_leave_busy"=>$busy,
+        "emp_leave_vacation"=>$vacation,
+        "emp_leave_mate"=>$mate
+    );
+    updateSQL("tb_employee_leave",$data,"emp_id=$id");
+}
 ?>
