@@ -70,9 +70,7 @@
             </div>
         </div>
     </div>
-    <div class="card-body">
-        <?php include ('leave_table.php'); ?>
-    </div>
+    <?php include ('leave_table.php'); ?>
 </div>
 <?php include ('leave_modal.php'); ?>
 <?php include ('leave_script.php'); ?>

@@ -18,7 +18,7 @@
                     <canvas id="workChart"></canvas>
                 </div>
                 <div class="col-12">
-                    <div class="card-body table-responsive">
+                    <div class="table-responsive">
                         <h5 class="card-title"><i class="far fa-clock"></i> ระบบบันทึกเวลาเข้างาน
                             <span style="font-weight:bold;" class="text-danger">
                                 วันที่ <?=DBThaiLongDate(date('Y-m-d'));?>
@@ -55,10 +55,12 @@
                         </table>
                     </div>
                 </div>
-                <div class="container">
-                    <h5 class="card-title"><i class="far fa-calendar"></i> ปฏิทินวันลา</h5>
-                    <div class="col-lg-12">
-                        <div id="calendar"></div>
+                <div class="container-fluid">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="far fa-calendar"></i> ปฏิทินวันลา</h5>
+                        <div class="col-lg-12">
+                            <div id="calendar"></div>
+                        </div>
                     </div>
                 </div>
             </div>
