@@ -27,7 +27,6 @@
                         <table id="timelist" class="table table-sm table-striped nowrap" width="100%" cellspacing="0">
                             <thead class="text-primary">
                                 <tr>
-                                    <th class="text-center">TIME_ID</th>
                                     <th class="text-center">เวลาเข้างาน</th>
                                     <th>ชื่อ/สกุล</th>
                                     <th>ฝ่าย/กลุ่มงาน</th>
@@ -37,7 +36,6 @@
                             <tbody>
                                 <?php foreach ($atime as $time){ ?>
                                 <tr>
-                                    <td class="text-center"><?=$time['work_id']?></td>
                                     <td class="text-center"><span style="font-weight:bold;">
                                             <?=substr($time['work_in'],10,20)?>
                                         </span>

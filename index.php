@@ -51,6 +51,8 @@
                             <?php if ($menu=='e-Helpdesk'){ include ('pages/helpdesk/index.php'); } ?>
                             <?php if ($menu=='e-Report'){ include ('pages/report/index.php'); } ?>
                             <?php if ($menu=='e-Supplies'){ include ('pages/supplies/index.php'); } ?>
+                            <?php if ($menu=='e-Worktime'){ include ('pages/worktime/index.php'); } ?>
+                            <?php if ($menu=='Worktime-Report'){ include ('pages/worktime/worktime_report.php'); } ?>
                         </div>
                     </div>
                 </div>

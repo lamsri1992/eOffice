@@ -9,6 +9,7 @@
         </div>
     </div>
     <div class="card-body">
+        <?php include ('components/breadcrumb.php'); ?>
         <?php if(isset($empSession['privilege_hr'])){ ?>
         <div class="text-right">
             <button class="btn btn-dark btn-sm" data-toggle="modal" data-target="#addNewEmp">

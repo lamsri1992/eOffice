@@ -9,4 +9,5 @@
     if($menu=='e-Helpdesk'){ $aehelpdesk='active';}
     if($menu=='e-Report'){ $aereport='active';}
     if($menu=='e-Supplies'){ $aesupplies='active';}
+    if($menu=='e-Worktime' || $menu=='Worktime-Report'){ $awork='active';}
 ?>

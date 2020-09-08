@@ -3,6 +3,7 @@ $emp = $unithead->getEmpDept($empSession['emp_dept']); $count_emp = $unithead->c
 $leave = $unithead->getLeaveDept($empSession['emp_dept']); $count_leave = $unithead->countLeaveDept($empSession['emp_dept']);
 ?>
 <div class="card">
+    <?php include ('components/breadcrumb.php'); ?>
     <div class="card-header card-header-tabs card-header-primary">
         <div class="nav-tabs-navigation">
             <div class="nav-tabs-wrapper">

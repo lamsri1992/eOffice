@@ -49,6 +49,12 @@
                     <p>ระบบฐานข้อมูลบุคลากร</p>
                 </a>
             </li>
+            <li class="nav-item <?=$awork?>">
+                <a class="nav-link" href="?menu=e-Worktime">
+                    <i class="material-icons">av_timer</i>
+                    <p>ระบบบันทึกเวลาเข้างาน</p>
+                </a>
+            </li>
             <li class="nav-item <?=$aform?>">
                 <a class="nav-link" href="?menu=e-Form">
                     <i class="material-icons">get_app</i>

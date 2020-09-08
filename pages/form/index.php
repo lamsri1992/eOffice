@@ -9,6 +9,7 @@
         </div>
     </div>
     <div class="card-body">
+    <?php include ('components/breadcrumb.php'); ?>
         <!-- <div class="text-right">
             <button class="btn btn-dark btn-sm" data-toggle="modal" data-target="#addNewForm">
                 <i class="fa fa-file-import"></i> เพิ่มแบบฟอร์ม

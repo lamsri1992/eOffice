@@ -16,6 +16,7 @@ include ('api/form.class.php');
 include ('api/note.class.php');
 include ('api/unithead.class.php');
 include ('api/helpdesk.class.php');
+include ('api/worktime.class.php');
 
 $mysqli = connect();
 $dashboard = new dashboard();
@@ -26,6 +27,7 @@ $form = new form();
 $note = new note();
 $unithead = new unitHead();
 $helpdesk = new Helpdesk();
+$worktime = new Worktime();
 
 $empSession = $user->getUser($_SESSION['employee']);
 ?>

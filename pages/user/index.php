@@ -12,6 +12,7 @@
         </div>
     </div>
     <div class="card-body">
+        <?php include ('components/breadcrumb.php'); ?>
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
