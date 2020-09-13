@@ -2,7 +2,13 @@
 if($_REQUEST['wdept']==0){$finddept="";}else{$finddept="AND tb_employee.emp_dept = {$_REQUEST['wdept']}";}
 if($_REQUEST['wtype']==0){$findtype="";}else{$findtype="AND tb_employee.emp_job = {$_REQUEST['wtype']}";}
     $sql = "SELECT tb_employee.emp_name,tb_employee.emp_barcode,tb_department.dept_name,tb_employee.emp_position,tb_employee_job.emp_job_name,tb_employee_job.emp_job_id,
-            COUNT(IF(tb_worktime.work_status='1',1,NULL)) AS count_work,COUNT(IF(tb_worktime.work_status='0',1, NULL)) AS count_late
+            COUNT(IF(tb_worktime.work_status='1',1,NULL)) AS count_work,COUNT(IF(tb_worktime.work_status='0',1, NULL)) AS count_late,
+            (SELECT SUM(tb_leave.leave_num) FROM tb_leave WHERE tb_leave.leave_type = 'sick' AND tb_leave.emp_id = tb_employee.emp_id 
+             AND tb_leave.leave_status ='approve' AND (tb_leave.leave_start >= '2020-{$_REQUEST['wmonth']}-01' AND tb_leave.leave_end <= '2020-{$_REQUEST['wmonth']}-31') GROUP BY tb_employee.emp_id) AS count_sick,
+            (SELECT SUM(tb_leave.leave_num) FROM tb_leave WHERE tb_leave.leave_type = 'busy' AND tb_leave.emp_id = tb_employee.emp_id 
+             AND tb_leave.leave_status ='approve' AND (tb_leave.leave_start >= '2020-{$_REQUEST['wmonth']}-01' AND tb_leave.leave_end <= '2020-{$_REQUEST['wmonth']}-31') GROUP BY tb_employee.emp_id) AS count_busy,
+            (SELECT SUM(tb_leave.leave_num) FROM tb_leave WHERE tb_leave.leave_type = 'vacation' AND tb_leave.emp_id = tb_employee.emp_id 
+             AND tb_leave.leave_status ='approve' AND (tb_leave.leave_start >= '2020-{$_REQUEST['wmonth']}-01' AND tb_leave.leave_end <= '2020-{$_REQUEST['wmonth']}-31') GROUP BY tb_employee.emp_id) AS count_vacation
             FROM tb_employee
             LEFT JOIN tb_worktime ON tb_worktime.emp_barcode = tb_employee.emp_barcode
             LEFT JOIN tb_department ON tb_department.dept_id = tb_employee.emp_dept
@@ -40,9 +46,12 @@ if($_REQUEST['wtype']==0){$findtype="";}else{$findtype="AND tb_employee.emp_job 
                         <th>เจ้าหน้าที่</th>
                         <th>ประเภท</th>
                         <th>ฝ่ายงาน</th>
-                        <th width="7%" class="text-center">ทำงาน</th>
-                        <th width="7%" class="text-center">มาสาย</th>
-                        <th width="7%" class="text-center">รวม</th>
+                        <th width="5%" class="text-center">ทำงาน</th>
+                        <th width="5%" class="text-center">มาสาย</th>
+                        <th width="5%" class="text-center">ลาป่วย</th>
+                        <th width="5%" class="text-center">ลากิจ</th>
+                        <th width="5%" class="text-center">ลาพักผ่อน</th>
+                        <th width="5%" class="text-center">รวม</th>
                         <th width="10%" class="text-center">หมายเหตุ</th>
                     </tr>
                 </thead>
@@ -60,6 +69,21 @@ if($_REQUEST['wtype']==0){$findtype="";}else{$findtype="AND tb_employee.emp_job 
                     <td class="text-center">
                         <span class="badge badge-danger btn-block" style="font-size:14px">
                             <?=$res['count_late']?>
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <span class="badge badge-dark btn-block" style="font-size:14px">
+                            <?=$res['count_sick']==''?'0':$res['count_sick']?>
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <span class="badge badge-dark btn-block" style="font-size:14px">
+                            <?=$res['count_busy']==''?'0':$res['count_busy']?>
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <span class="badge badge-dark btn-block" style="font-size:14px">
+                            <?=$res['count_vacation']==''?'0':$res['count_vacation']?>
                         </span>
                     </td>
                     <td class="text-center">

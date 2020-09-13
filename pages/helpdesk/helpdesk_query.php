@@ -11,7 +11,7 @@ if($op == 'add'){
     $empid = mysqli_real_escape_string($mysqli,$_REQUEST['empid']);
     $deptid = mysqli_real_escape_string($mysqli,$_REQUEST['deptid']);
     $title = mysqli_real_escape_string($mysqli,$_REQUEST['title']);
-    $start = date("Y-m-d h:i:s");
+    $start = date("Y-m-d H:i:s");
     $data = array(
         "help_create"=>$empid,
         "help_dept"=>$deptid,
@@ -37,7 +37,7 @@ if($op == 'update'){
     $fix = mysqli_real_escape_string($mysqli,$_REQUEST['fix']);
     $status = mysqli_real_escape_string($mysqli,$_REQUEST['status']);
     $support = mysqli_real_escape_string($mysqli,$_REQUEST['support']);
-    $end = date("Y-m-d h:i:s");
+    $end = date("Y-m-d H:i:s");
     $data = array(
         "help_cause"=>$cause,
         "help_fix"=>$fix,

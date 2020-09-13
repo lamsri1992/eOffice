@@ -5,7 +5,10 @@
             <th>ID::CARD</th>
             <th>ชื่อ/สกุล</th>
             <th>ฝ่าย/กลุ่มงาน</th>
+            <th class="text-center">วันที่เข้างาน</th>
             <th class="text-center">เวลาเข้างาน</th>
+            <th class="text-center">เวลาเข้าเวรบ่าย</th>
+            <th class="text-center">เวลาเข้าเวรดึก</th>
             <th class="text-center"><i class="far fa-check-square"></i></th>
         </tr>
     </thead>
@@ -18,7 +21,22 @@
             <td><?=$time['dept_name']?></td>
             <td class="text-center">
                 <span style="font-weight:bold;">
-                    <?=$time['work_in']?>
+                    <?=substr(DateTimeThai($time['work_in']),0,16)?>
+                </span>
+            </td>
+            <td class="text-center">
+                <span style="font-weight:bold;">
+                    <?=substr($time['work_in'],10,20)?>
+                </span>
+            </td>
+            <td class="text-center">
+                <span style="font-weight:bold;">
+                    <?=substr($time['work_early'],10,20)?>
+                </span>
+            </td>
+            <td class="text-center">
+                <span style="font-weight:bold;">
+                    <?=substr($time['work_night'],10,20)?>
                 </span>
             </td>
             <td class="text-center">
