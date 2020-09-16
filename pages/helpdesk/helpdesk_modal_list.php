@@ -5,16 +5,20 @@ include ('../../config/exdate.class.php');
 include ('../../api/helpdesk.class.php');
 include ('../../api/hr.class.php');
 include ('../../api/user.class.php');
+include ('../../api/leave.class.php');
+
 
 $id = $_REQUEST['id'];
 $mysqli = connect();
 $user = new user();
 $hr = new hr();
 $helpdesk = new Helpdesk();
+$leave = new leave();
 $data = $helpdesk->getListEdit($id);
 $dep = $hr->getDepartment();
 $job = $hr->getJob();
 $empSession = $user->getUser($_SESSION['employee']);
+$resUnderTaker = $leave->getUndertaker();
 ?>
 <div class="modal-content">
     <div class="modal-header">
@@ -74,6 +78,23 @@ $empSession = $user->getUser($_SESSION['employee']);
                                 รออะไหล่</option>
                         </select>
                     </div>
+                </div>
+                <div class="form-group">
+                    <table class="table table-bordered text-center">
+                        <tr>
+                            <th width="20%">ผู้ดำเนินการ</th>
+                            <td>
+                            <?php 
+                            foreach ($resUnderTaker AS $name){ 
+                                if ($data['help_support']==$name['emp_id']){ echo "<span>".$name['emp_name']."</span>"; } 
+                            } ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>วันที่ดำเนินการ</th>
+                            <td><?=DateTimeThai($data['help_end'])?></td>
+                        </tr>
+                    </table>
                 </div>
                 <div class="modal-footer">
                     <?php if($data['help_status']=='success'){$btn="hidden";}else{$btn="";} ?>
