@@ -10,8 +10,50 @@
     </div>
     <div class="card-body">
         <?php include ('components/breadcrumb.php'); ?>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-10 text-right"></div>
+                <div class="col-md-2">
+                    <button class="btn btn-danger btn-block" data-toggle="modal"
+                        data-target="#rule">ลงบันทึกเวลาพิเศษ</button>
+                </div>
+            </div>
+        </div>
         <?php include ('pages/worktime/worktime_form.php'); ?>
         <?php include ('pages/worktime/worktime_table.php'); ?>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="rule" tabindex="-1" role="dialog" aria-labelledby="ruleLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ruleLabel">ลงบันทึกเวลาพิเศษ</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="addWork">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="text" id="empname" name="empname" class="form-control" placeholder="กรอกชื่อเจ้าหน้าที่" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="empcode" name="empcode" class="form-control" readonly required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="dateSave" name="dateSave" class="form-control" placeholder="เลือกวันที่" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="note" class="form-control" placeholder="ระบุหมายเหตุ เช่น ไปรีเฟอร์ ไปราชการ ไปออกหน่วย" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="btnSave" class="btn btn-primary"><i class="fa fa-save"></i> บันทึกเวลา</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -19,4 +61,65 @@
 $(function() {
     $('[data-toggle="tooltip"]').tooltip()
 })
+
+// datePicker
+$(function() {
+    $.datetimepicker.setLocale('th');
+    $("#dateSave").datetimepicker({
+        format: 'Y/m/d',
+        timepicker: false,
+        lang: 'th',
+    });
+});
+
+// autocomplete
+function make_autocom(autoObj, showObj) {
+    var mkAutoObj = autoObj;
+    var mkSerValObj = showObj;
+    new Autocomplete(mkAutoObj, function() {
+        this.setValue = function(id) {
+            document.getElementById(mkSerValObj).value = id;
+        }
+        if (this.isModified)
+            this.setValue("");
+        if (this.value.length < 1 && this.isNotClick)
+            return;
+        return "api/json_employee_code.php?q=" + encodeURIComponent(this.value);
+    });
+}
+make_autocom("empname", "empcode");
+
+// sweetalert + confirm add data
+$('#addWork').on("submit", function(event) {
+    event.preventDefault();
+    swal({
+            title: "ยืนยันการบันทึกเวลาเข้างาน ?",
+            icon: "warning",
+            dangerMode: true,
+            buttons: true,
+        })
+        .then((createCnf) => {
+            if (createCnf) {
+                document.getElementById("btnSave").disabled = true;
+                $.ajax({
+                    url: "pages/worktime/worktime_query.php",
+                    method: "POST",
+                    data: $('#addWork').serialize(),
+                    success: function(data) {
+                        swal('Success!',
+                            'ทำรายการขออนุมัติวันลาสำเร็จ',
+                            'success', {
+                                closeOnClickOutside: false,
+                                closeOnEsc: false,
+                                buttons: false,
+                                timer: 3000,
+                            });
+                        window.setTimeout(function() {
+                            location.replace('?menu=e-Worktime')
+                        }, 1500);
+                    }
+                });
+            }
+        });
+});
 </script>
