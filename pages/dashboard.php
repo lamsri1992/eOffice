@@ -29,24 +29,32 @@
                                 <tr>
                                     <th class="text-center">เวลาเข้างาน</th>
                                     <th>ชื่อ/สกุล</th>
+                                    <th>ตำแหน่ง</th>
                                     <th>ฝ่าย/กลุ่มงาน</th>
-                                    <th class="text-center"><i class="far fa-check-square"></i></th>
+                                    <th class="text-center" width="2%"><i class="fa fa-check-square"></i></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($atime as $time){ ?>
                                 <tr>
-                                    <td class="text-center"><span style="font-weight:bold;">
-                                            <?=substr($time['work_in'],10,20)?>
+                                    <td class="text-center">
+                                        <span style="font-weight:bold;">
+                                            <?=substr($time['work_time'],10,20)?>
                                         </span>
                                     </td>
                                     <td><?=$time['emp_name']?></td>
+                                    <td><?=$time['emp_position']?></td>
                                     <td><?=$time['dept_name']?></td>
                                     <td class="text-center">
-                                        <?php 
-                                            if($time['work_status']=='1'){
-                                                echo "<span class='badge badge-success'><i class='fa fa-check-circle'></i> เข้างานปกติ</span>";
-                                            }else{ echo "<span class='badge badge-danger'><i class='fa fa-exclamation-circle'></i> เข้างานสาย</span>"; }
+                                        <?php if(!isset($time['wstat_name'])){
+                                            echo "<a href='#' class='badge badge-danger btn-block' data-toggle='tooltip' data-placement='top' title='รอการตรวจสอบ'>รอตรวจสอบ</a>";
+                                        }else{
+                                            echo "
+                                            <a href='#' class='badge badge-".$time['wstat_badge']." btn-block' data-toggle='tooltip' 
+                                            data-placement='top' title='".$time['wstat_note']." ".$time['work_note']." '>
+                                                ".$time['wstat_name']."
+                                            </a>";
+                                        }
                                         ?>
                                     </td>
                                 </tr>

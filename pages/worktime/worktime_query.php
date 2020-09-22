@@ -12,9 +12,10 @@ $note = mysqli_real_escape_string($mysqli,$_REQUEST['note']);
 $time = mysqli_real_escape_string($mysqli,Date2DBDate($_REQUEST['dateSave'])." 08:45:59");
  // เพิ่มเวลาเข้างานกรณีพิเศษ
 $add = "INSERT INTO tb_worktime SET 
-        work_in = '{$time}',
+        work_time = '{$time}',
         emp_barcode = '{$empcode}',
-        work_status = '1'";
+        work_status = '1',
+        work_note = '{$note}'";
 $mysqli->query($add);
 
 ?>

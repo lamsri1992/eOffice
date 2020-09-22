@@ -107,7 +107,7 @@ $('#addWork').on("submit", function(event) {
                     data: $('#addWork').serialize(),
                     success: function(data) {
                         swal('Success!',
-                            'ทำรายการขออนุมัติวันลาสำเร็จ',
+                            'บันทึกเวลาเข้างานสำเร็จ',
                             'success', {
                                 closeOnClickOutside: false,
                                 closeOnEsc: false,

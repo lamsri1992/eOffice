@@ -34,7 +34,8 @@ Class dashboard {
         $sql = "SELECT * FROM tb_worktime
             LEFT JOIN tb_employee ON tb_employee.emp_barcode = tb_worktime.emp_barcode
             LEFT JOIN tb_department ON tb_department.dept_id = tb_employee.emp_dept
-            WHERE tb_worktime.work_in LIKE '%{$date}%'";
+            LEFT JOIN tb_worktime_status ON tb_worktime_status.wstat_id  = tb_worktime.work_status
+            WHERE tb_worktime.work_time LIKE '%{$date}%'";
         global $mysqli;
         $obj = array();
         $res = $mysqli->query($sql);
@@ -66,8 +67,10 @@ Class dashboard {
 
     function getTime(){
         $sql = "SELECT
-            (SELECT COUNT(*) FROM tb_worktime WHERE STR_TO_DATE(work_in, '%Y-%m-%d') = CURDATE() AND work_status = '0' GROUP BY work_status) AS count_late,
-            (SELECT COUNT(*) FROM tb_worktime WHERE STR_TO_DATE(work_in, '%Y-%m-%d') = CURDATE() AND work_status = '1' GROUP BY work_status) AS count_normal";
+            (SELECT COUNT(*) FROM tb_worktime WHERE STR_TO_DATE(work_time, '%Y-%m-%d') = CURDATE() AND work_status = '0' GROUP BY work_status) AS count_late,
+            (SELECT COUNT(*) FROM tb_worktime WHERE STR_TO_DATE(work_time, '%Y-%m-%d') = CURDATE() AND work_status = '1' GROUP BY work_status) AS count_normal,
+            (SELECT COUNT(*) FROM tb_worktime WHERE STR_TO_DATE(work_time, '%Y-%m-%d') = CURDATE() AND work_status = '2' GROUP BY work_status) AS count_early,
+            (SELECT COUNT(*) FROM tb_worktime WHERE STR_TO_DATE(work_time, '%Y-%m-%d') = CURDATE() AND work_status = '3' GROUP BY work_status) AS count_night";
         global $mysqli;
         $res = $mysqli->query($sql) or die("SQL Error: <br>".$sql."<br>".$mysqli->error);
         $data = $res->fetch_assoc();

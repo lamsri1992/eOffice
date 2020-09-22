@@ -2,7 +2,7 @@
 if($_REQUEST['wdept']==0){$finddept="";}else{$finddept="AND tb_employee.emp_dept = {$_REQUEST['wdept']}";}
 if($_REQUEST['wtype']==0){$findtype="";}else{$findtype="AND tb_employee.emp_job = {$_REQUEST['wtype']}";}
     $sql = "SELECT tb_employee.emp_name,tb_employee.emp_barcode,tb_department.dept_name,tb_employee.emp_position,tb_employee_job.emp_job_name,tb_employee_job.emp_job_id,
-            COUNT(IF(tb_worktime.work_status='1',1,NULL)) AS count_work,COUNT(IF(tb_worktime.work_status='0',1, NULL)) AS count_late,
+            COUNT(IF(tb_worktime.work_status='1',1,NULL)) AS count_work,
             (SELECT SUM(tb_leave.leave_num) FROM tb_leave WHERE tb_leave.leave_type = 'sick' AND tb_leave.emp_id = tb_employee.emp_id 
              AND tb_leave.leave_status ='approve' AND (tb_leave.leave_start >= '2020-{$_REQUEST['wmonth']}-01' AND tb_leave.leave_end <= '2020-{$_REQUEST['wmonth']}-31') GROUP BY tb_employee.emp_id) AS count_sick,
             (SELECT SUM(tb_leave.leave_num) FROM tb_leave WHERE tb_leave.leave_type = 'busy' AND tb_leave.emp_id = tb_employee.emp_id 
@@ -13,7 +13,7 @@ if($_REQUEST['wtype']==0){$findtype="";}else{$findtype="AND tb_employee.emp_job 
             LEFT JOIN tb_worktime ON tb_worktime.emp_barcode = tb_employee.emp_barcode
             LEFT JOIN tb_department ON tb_department.dept_id = tb_employee.emp_dept
             LEFT JOIN tb_employee_job ON tb_employee_job.emp_job_id  = tb_employee.emp_job
-            WHERE tb_worktime.work_in BETWEEN '2020-{$_REQUEST['wmonth']}-01' AND '2020-{$_REQUEST['wmonth']}-31'
+            WHERE tb_worktime.work_time BETWEEN '2020-{$_REQUEST['wmonth']}-01' AND '2020-{$_REQUEST['wmonth']}-31'
             $finddept $findtype
             GROUP BY tb_employee.emp_id
             ORDER BY tb_department.dept_id ASC";
@@ -47,7 +47,6 @@ if($_REQUEST['wtype']==0){$findtype="";}else{$findtype="AND tb_employee.emp_job 
                         <th>ประเภท</th>
                         <th>ฝ่ายงาน</th>
                         <th width="5%" class="text-center">ทำงาน</th>
-                        <th width="5%" class="text-center">มาสาย</th>
                         <th width="5%" class="text-center">ลาป่วย</th>
                         <th width="5%" class="text-center">ลากิจ</th>
                         <th width="5%" class="text-center">ลาพักผ่อน</th>
@@ -64,11 +63,6 @@ if($_REQUEST['wtype']==0){$findtype="";}else{$findtype="AND tb_employee.emp_job 
                     <td class="text-center">
                         <span class="badge badge-success btn-block" style="font-size:14px">
                             <?=$res['count_work']?>
-                        </span>
-                    </td>
-                    <td class="text-center">
-                        <span class="badge badge-danger btn-block" style="font-size:14px">
-                            <?=$res['count_late']?>
                         </span>
                     </td>
                     <td class="text-center">
