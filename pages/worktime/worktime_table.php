@@ -1,4 +1,4 @@
-<table id="tableList" class="table table-sm table-striped nowrap" width="100%" cellspacing="0">
+<table id="worktime" class="table table-sm table-striped nowrap" width="100%" cellspacing="0">
     <thead class="text-primary">
         <tr>
             <th class="text-center">ID::TIME</th>
@@ -42,9 +42,82 @@
         </tr>
         <?php } ?>
     </tbody>
+    <tfoot class="text-primary">
+        <tr>
+            <th class="text-center">ID::TIME</th>
+            <th>ID::CARD</th>
+            <th>ชื่อ/สกุล</th>
+            <th>ฝ่าย/กลุ่มงาน</th>
+            <th class="text-center">วันที่เข้างาน</th>
+            <th class="text-center">เวลาเข้างาน</th>
+            <th class="text-center"><i class="far fa-check-square"></i></th>
+        </tr>
+    </tfoot>
 </table>
 <script>
+// $(document).ready(function() {
+//     $('#worktime').DataTable({
+//         initComplete: function() {
+//             this.api().columns([2, 3]).every(function() {
+//                 var column = this;
+//                 var select = $(
+//                         '<select class="select-single"><option value=""></option></select>')
+//                     .appendTo($(column.footer()).empty())
+//                     .on('change', function() {
+//                         var val = $.fn.dataTable.util.escapeRegex(
+//                             $(this).val()
+//                         );
+//                         column
+//                             .search(val ? '^' + val + '$' : '', true, false)
+//                             .draw();
+//                     });
+//                 column.cells('', column[0]).render('display').sort().unique().each(function(
+//                     d, j) {
+//                     select.append('<option value="' + d + '">' + d + '</option>')
+//                 });
+//             });
+//         }
+//     });
+// });
+$(document).ready(function() {
+    var table = $('#worktime').DataTable({
+        responsive: true,
+        "pageLength": 15,
+        "lengthMenu": [
+            [15, 50, 100, -1],
+            [15, 50, 100, "All"]
+        ],
+        order: [
+            [0, "desc"]
+        ],
+        initComplete: function() {
+            this.api().columns([2, 3]).every(function() {
+                var column = this;
+                var select = $(
+                        '<select class="select-single"><option value=""></option></select>')
+                    .appendTo($(column.footer()).empty())
+                    .on('change', function() {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+                        column
+                            .search(val ? '^' + val + '$' : '', true, false)
+                            .draw();
+                    });
+                column.cells('', column[0]).render('display').sort().unique().each(function(
+                    d, j) {
+                    select.append('<option value="' + d + '">' + d + '</option>')
+                });
+            });
+        }
+    });
+});
+
 $(function() {
     $('[data-toggle="tooltip"]').tooltip()
 })
+
+$(document).ready(function() {
+    $('.select-single').select2();
+});
 </script>

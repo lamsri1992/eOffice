@@ -83,7 +83,7 @@ var workChart = new Chart(ctx, {
         labels: ['เข้าสาย', 'เข้าปกติ/เวรเช้า','เวรบ่าย','เวรดึก'],
         datasets: [{
             label: 'สถิติการเข้างาน (ประจำวัน)',
-            data: [<?=$tchart['count_late']?>, <?=$tchart['count_normal']?>, <?=$tchart['count_early']?>, <?=$tchart['count_night']?>],
+            data: [<?=$count_late?>, <?=$tchart['count_normal']?>, <?=$tchart['count_early']?>, <?=$tchart['count_night']?>],
             backgroundColor: 'green',
             borderColor: 'green',
             borderWidth: 1

@@ -13,10 +13,13 @@
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-10 text-right"></div>
+                <?php if(isset($empSession['privilege_hr'])){ ?>
                 <div class="col-md-2">
-                    <button class="btn btn-danger btn-block" data-toggle="modal"
-                        data-target="#rule">ลงบันทึกเวลาพิเศษ</button>
+                    <button class="btn btn-danger btn-block" data-toggle="modal" data-target="#rule">
+                        ลงบันทึกเวลาพิเศษ
+                    </button>
                 </div>
+                <?php } ?>
             </div>
         </div>
         <?php include ('pages/worktime/worktime_form.php'); ?>
@@ -37,20 +40,24 @@
             <form id="addWork">
                 <div class="modal-body">
                     <div class="form-group">
-                        <input type="text" id="empname" name="empname" class="form-control" placeholder="กรอกชื่อเจ้าหน้าที่" required>
+                        <input type="text" id="empname" name="empname" class="form-control"
+                            placeholder="กรอกชื่อเจ้าหน้าที่" required>
                     </div>
                     <div class="form-group">
                         <input type="text" id="empcode" name="empcode" class="form-control" readonly required>
                     </div>
                     <div class="form-group">
-                        <input type="text" id="dateSave" name="dateSave" class="form-control" placeholder="เลือกวันที่" required>
+                        <input type="text" id="dateSave" name="dateSave" class="form-control" placeholder="เลือกวันที่"
+                            required>
                     </div>
                     <div class="form-group">
-                        <input type="text" name="note" class="form-control" placeholder="ระบุหมายเหตุ เช่น ไปรีเฟอร์ ไปราชการ ไปออกหน่วย" required>
+                        <input type="text" name="note" class="form-control"
+                            placeholder="ระบุหมายเหตุ เช่น ไปรีเฟอร์ ไปราชการ ไปออกหน่วย" required>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" id="btnSave" class="btn btn-primary"><i class="fa fa-save"></i> บันทึกเวลา</button>
+                    <button type="submit" id="btnSave" class="btn btn-primary"><i class="fa fa-save"></i>
+                        บันทึกเวลา</button>
                 </div>
             </form>
         </div>

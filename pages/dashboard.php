@@ -35,14 +35,35 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($atime as $time){ ?>
-                                <tr>
+                                <?php 
+                                    $latetime = date('Y-m-d')." 08:46:00";
+                                    $count_late = 0;
+                                    foreach ($atime as $time){
+                                    if($time['work_time'] >= $latetime && $time['work_status'] == 1){
+                                        $late = 'text-danger';
+                                        $text = 'เข้างานสาย';
+                                        $count_late++;
+                                    }else{
+                                        $late = '';
+                                        $text = '';
+                                    }
+                                ?>
+                                <tr class="<?=$late?>">
                                     <td class="text-center">
                                         <span style="font-weight:bold;">
                                             <?=substr($time['work_time'],10,20)?>
                                         </span>
                                     </td>
-                                    <td><?=$time['emp_name']?></td>
+                                    <td class="row">
+                                        <div class="col-md-8">
+                                            <?=$time['emp_name']?>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <span style="font-weight:bold;">
+                                                <?=$text?>
+                                            </span>
+                                        </div>
+                                    </td>
                                     <td><?=$time['emp_position']?></td>
                                     <td><?=$time['dept_name']?></td>
                                     <td class="text-center">
