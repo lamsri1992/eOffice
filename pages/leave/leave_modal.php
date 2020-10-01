@@ -1,5 +1,5 @@
 <!-- Modal Add New -->
-<div class="modal fade" id="addNew" tabindex="-1" role="dialog">
+<div class="modal fade" id="addNew" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -34,7 +34,7 @@
                     <div class="form-group row">
                         <label class="col-md-12 control-label">ประเภทการลา</label>
                         <div class="col-md-12">
-                            <select name="ltype" class="form-control input-md" required>
+                            <select name="ltype" class="js-single" required>
                                 <option value="">เลือกประเภทการลา</option>
                                 <option value="sick">- ลาป่วย</option>
                                 <option value="busy">- ลากิจ</option>
@@ -45,7 +45,7 @@
                     <div class="form-group row">
                         <label class="col-md-12 control-label">ระยะเวลา</label>
                         <div class="col-md-12">
-                            <select name="ltime" class="form-control input-md" required>
+                            <select name="ltime" class="js-single" required>
                                 <option value="">เลือกระยะเวลา</option>
                                 <option value="full">- เต็มวัน (8.00น. - 16.00น.)</option>
                                 <option value="half_m">- ครึ่งเช้า (8:00น. - 12:00น.)</option>
@@ -72,9 +72,12 @@
                     <div class="form-group row">
                         <label class="col-md-4 control-label">ผู้รับผิดชอบงานระหว่างลา</label>
                         <div class="col-md-12">
-                            <input id="empuname" name="empuname" type="text" placeholder="กรอกชื่อผู้รับผิดชอบงาน"
-                                class="form-control input-md" required>
-                            <input id="empuid" name="empuid" type="hidden">
+                            <select class="js-single" name="empuid">
+                                <option>-- เลือกผู้รับผิดชอบงานแทน --</option>
+                                <?php foreach ($resUnderTaker as $rn){
+                                    echo "<option value='".$rn['emp_id']."'>".$rn['emp_id']." :: ".$rn['emp_name']."</option>";
+                                } ?>
+                            </select>
                         </div>
                     </div>
                 </div>

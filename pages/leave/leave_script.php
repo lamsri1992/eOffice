@@ -103,4 +103,8 @@ $('#addLeave').on("submit", function(event) {
             });
     }
 });
+
+$(document).ready(function() {
+    $('.js-single').select2({ width: '100%' });
+});
 </script>
