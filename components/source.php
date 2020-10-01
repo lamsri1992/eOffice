@@ -113,4 +113,20 @@ $(document).ready(function() {
         bLengthChange: false,
     });
 });
+
+$(document).ready(function() {
+    $('#lostlist').DataTable({
+        responsive: true,
+        paging: true,
+        info: false,
+        searching: false,
+        order: [
+            [0, "asc"]
+        ],
+        lengthMenu: [
+            [10],
+        ],
+        bLengthChange: false,
+    });
+});
 </script>

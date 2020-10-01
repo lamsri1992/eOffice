@@ -75,7 +75,22 @@ Class dashboard {
         $res = $mysqli->query($sql) or die("SQL Error: <br>".$sql."<br>".$mysqli->error);
         $data = $res->fetch_assoc();
         return $data;
+    }
+
+    function getTimeLost($date){
+        $sql = "SELECT tb_employee.emp_name,tb_employee.emp_barcode,tb_employee.emp_position,tb_department.dept_name
+            FROM tb_employee
+            LEFT JOIN tb_department ON tb_department.dept_id = tb_employee.emp_dept
+            WHERE NOT tb_employee.emp_barcode IN(SELECT tb_worktime.emp_barcode FROM tb_worktime WHERE DATE(tb_worktime.work_time) = '{$date}')
+            AND tb_employee.emp_status = 'ปฏิบัติงาน'";
+        global $mysqli;
+        $obj = array();
+        $res = $mysqli->query($sql);
+        while($data = $res->fetch_assoc()) {
+        $obj[] = $data;
         }
+        return $obj;
+    }
 }
 
 ?>
