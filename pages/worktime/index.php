@@ -73,8 +73,11 @@ $(function() {
 $(function() {
     $.datetimepicker.setLocale('th');
     $("#dateSave").datetimepicker({
-        format: 'Y/m/d',
-        timepicker: false,
+        format: 'Y/m/d H:i',
+        allowTimes: [
+            '08:45', '13:00', '16:45', '23:45'
+        ],
+        timepicker: true,
         lang: 'th',
     });
 });

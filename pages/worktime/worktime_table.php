@@ -55,30 +55,6 @@
     </tfoot>
 </table>
 <script>
-// $(document).ready(function() {
-//     $('#worktime').DataTable({
-//         initComplete: function() {
-//             this.api().columns([2, 3]).every(function() {
-//                 var column = this;
-//                 var select = $(
-//                         '<select class="select-single"><option value=""></option></select>')
-//                     .appendTo($(column.footer()).empty())
-//                     .on('change', function() {
-//                         var val = $.fn.dataTable.util.escapeRegex(
-//                             $(this).val()
-//                         );
-//                         column
-//                             .search(val ? '^' + val + '$' : '', true, false)
-//                             .draw();
-//                     });
-//                 column.cells('', column[0]).render('display').sort().unique().each(function(
-//                     d, j) {
-//                     select.append('<option value="' + d + '">' + d + '</option>')
-//                 });
-//             });
-//         }
-//     });
-// });
 $(document).ready(function() {
     var table = $('#worktime').DataTable({
         responsive: true,

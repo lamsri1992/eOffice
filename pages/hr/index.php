@@ -52,7 +52,7 @@
                             <?php $i = 0; $xtotal; foreach ($countJob as $rs){ $i++;?>
                             <tr>
                                 <td class="text-center"><?=$rs['emp_job_name']?></td>
-                                <td class="text-center"><?=$rs["job"."$i"]." คน"?></td>
+                                <td class="text-center"><?=$rs['total']." คน"?></td>
                             </tr>
                             <?php } ?>
                             <tr>

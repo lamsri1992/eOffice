@@ -19,7 +19,7 @@
                         </div>
                         <p class="card-category">จำนวนวันลากิจ</p>
                         <h3 class="card-title">
-                            <?=$countLeave['busy']==''?'0':$countLeave['busy']."/".$empSession['emp_leave_busy']?>
+                            <?=$countLeave['busy']==''?'0'."/".$empSession['emp_leave_busy']:$countLeave['busy']."/".$empSession['emp_leave_busy']?>
                             <small>วัน</small>
                         </h3>
                     </div>
@@ -38,7 +38,7 @@
                         </div>
                         <p class="card-category">จำนวนวันลาป่วย</p>
                         <h3 class="card-title">
-                            <?=$countLeave['sick']==''?'0':$countLeave['sick']."/".$empSession['emp_leave_sick']?>
+                            <?=$countLeave['sick']==''?'0'."/".$empSession['emp_leave_sick']:$countLeave['sick']."/".$empSession['emp_leave_sick']?>
                             <small>วัน</small>
                         </h3>
                     </div>
@@ -57,7 +57,7 @@
                         </div>
                         <p class="card-category">จำนวนวันลาพักผ่อน</p>
                         <h3 class="card-title">
-                            <?=$countLeave['vacation']==''?'0':$countLeave['vacation']."/".$empSession['emp_leave_vacation']?>
+                            <?=$countLeave['vacation']==''?'0'."/".$empSession['emp_leave_vacation']:$countLeave['vacation']."/".$empSession['emp_leave_vacation']?>
                             <small>วัน</small>
                         </h3>
                     </div>

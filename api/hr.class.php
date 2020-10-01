@@ -55,15 +55,15 @@ Class hr {
 
     function countJob(){
         $sql = "SELECT *,
-                COUNT(tb_employee.emp_job) AS total,
-                SUM(tb_employee.emp_job = '1') AS job1 , 
-                SUM(tb_employee.emp_job = '2') AS job2 ,
-                SUM(tb_employee.emp_job = '3') AS job3 ,
-                SUM(tb_employee.emp_job = '4') AS job4 ,
-                SUM(tb_employee.emp_job = '5') AS job5
+                COUNT(tb_employee.emp_job) AS total
+                -- SUM(tb_employee.emp_job = '1') AS job1 , 
+                -- SUM(tb_employee.emp_job = '2') AS job2 ,
+                -- SUM(tb_employee.emp_job = '3') AS job3 ,
+                -- SUM(tb_employee.emp_job = '4') AS job4 ,
+                -- SUM(tb_employee.emp_job = '5') AS job5
                 FROM tb_employee_job
                 LEFT JOIN tb_employee ON tb_employee.emp_job = tb_employee_job.emp_job_id
-                WHERE emp_status != 'ลาออก'
+                WHERE tb_employee.emp_status != 'ลาออก'
                 GROUP BY tb_employee_job.emp_job_id";
         global $mysqli;
             $obj = array();
@@ -90,7 +90,7 @@ Class hr {
                 SUM(tb_employee.emp_dept = '11') AS dept11
                 FROM tb_department
                 LEFT JOIN tb_employee ON tb_employee.emp_dept = tb_department.dept_id
-                WHERE emp_status != 'ลาออก'
+                WHERE tb_employee.emp_status != 'ลาออก'
                 GROUP BY tb_department.dept_id";
         global $mysqli;
             $obj = array();
