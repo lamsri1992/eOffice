@@ -32,6 +32,7 @@
                         </table>
                         <input name="empid" type="hidden" value="<?=$_SESSION['employee']?>">
                         <input name="deptid" type="hidden" value="<?=$empSession['dept_id']?>">
+                        <input name="empname" type="hidden" value="<?=$empSession['emp_name']?>">
                     </div>
                     <div class="form-group">
                         <span style="font-size:14px;">ระบุอาการ/ปัญหาการใช้งานไม่ได้</span>

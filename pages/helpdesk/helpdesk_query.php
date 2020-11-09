@@ -9,6 +9,7 @@ $op = $_REQUEST['op'];
 
 if($op == 'add'){
     $empid = mysqli_real_escape_string($mysqli,$_REQUEST['empid']);
+    $empname = mysqli_real_escape_string($mysqli,$_REQUEST['empname']);
     $deptid = mysqli_real_escape_string($mysqli,$_REQUEST['deptid']);
     $title = mysqli_real_escape_string($mysqli,$_REQUEST['title']);
     $start = date("Y-m-d H:i:s");
@@ -21,13 +22,13 @@ if($op == 'add'){
     insertSQL("tb_helpdesk",$data);
 
     // Select Department Name
-    $getunit="SELECT * FROM tb_department WHERE dept_id = '{$deptid}'"; 
+    $getunit="SELECT * FROM tb_department WHERE dept_id = '{$deptid}'";
     $unit=selectSQL($getunit);
     $rs=$unit[0];
 
     // Line Notify
     $Token = "l4nlyOCAb9Tf8ZR69I4LC3EWB2GyeNCuI04d2YbdEb0";
-    $message = "รายการแจ้งซ่อมใหม่ \n จาก :".$rs['dept_name']."\nสาเหตุ :".$title."";
+    $message = "รายการแจ้งซ่อมใหม่ \n จาก :".$rs['dept_name']."\nผู้แจ้ง :".$empname."\nสาเหตุ :".$title."";
     line_notify($Token, $message);
 }
 
