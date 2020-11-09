@@ -56,14 +56,14 @@ if($_REQUEST['wtype']==0){$findtype="";}else{$findtype="AND tb_employee.emp_job 
                         <th>เจ้าหน้าที่</th>
                         <th>ประเภท</th>
                         <th>ฝ่ายงาน</th>
-                        <th width="5%" class="text-center">ทำงาน</th>
-                        <th width="5%" class="text-center">ลาป่วย</th>
-                        <th width="5%" class="text-center">ลากิจ</th>
-                        <th width="5%" class="text-center">ลาพักผ่อน</th>
-                        <th width="5%" class="text-center">เวรเช้า</th>
-                        <th width="5%" class="text-center">เวรบ่าย</th>
-                        <th width="5%" class="text-center">เวรดึก</th>
-                        <th width="10%" class="text-center">หมายเหตุ</th>
+                        <th width="5%" class="text-center">IN</th>
+                        <th width="5%" class="text-center">ป่วย</th>
+                        <th width="5%" class="text-center">กิจ</th>
+                        <th width="5%" class="text-center">พักผ่อน</th>
+                        <th width="5%" class="text-center">เช้า</th>
+                        <th width="5%" class="text-center">บ่าย</th>
+                        <th width="5%" class="text-center">ดึก</th>
+                        <!-- <th width="10%" class="text-center">หมายเหตุ</th> -->
                     </tr>
                 </thead>
                 <?php foreach ($obj as $res){ ?>
@@ -112,12 +112,12 @@ if($_REQUEST['wtype']==0){$findtype="";}else{$findtype="AND tb_employee.emp_job 
                             <?=$res['count_ot_3']==''?'0':$res['count_ot_3']?>
                         </span>
                     </td>
-                    <td class="text-center">
+                    <!-- <td class="text-center">
                         <?php if($count >= 15 && $res['emp_job_id'] <> 5){ 
                                 echo "<span class='text-success'><i class='fa fa-check-circle'></i> ได้เบี้ย ฉ.11</span>"; }else{
                                 echo "<a href='#' class='text-danger' data-toggle='tooltip' data-placement='top' title='เวลาทำงานรวมไปถึง 15 วัน'><i class='fa fa-ban'></i> ไม่ได้เบี้ย ฉ.11</a>";} 
                             ?>
-                    </td>
+                    </td> -->
                 </tr>
                 <?php } ?>
             </table>

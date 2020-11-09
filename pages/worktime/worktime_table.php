@@ -58,8 +58,9 @@
 $(document).ready(function() {
     var table = $('#worktime').DataTable({
         responsive: true,
-        "pageLength": 15,
-        "lengthMenu": [
+        processing : true,
+        pageLength: 15,
+        lengthMenu: [
             [15, 50, 100, -1],
             [15, 50, 100, "All"]
         ],
