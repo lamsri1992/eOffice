@@ -1,126 +1,136 @@
 <?php
-if($_REQUEST['wdept']==0){$finddept="";}else{$finddept="AND tb_employee.emp_dept = {$_REQUEST['wdept']}";}
-if($_REQUEST['wtype']==0){$findtype="";}else{$findtype="AND tb_employee.emp_job = {$_REQUEST['wtype']}";}
-    $sql = "SELECT tb_employee.emp_name,tb_employee.emp_barcode,tb_department.dept_name,tb_employee.emp_position,tb_employee_job.emp_job_name,tb_employee_job.emp_job_id,
-            COUNT(IF(tb_worktime.work_status='1',1,NULL)) AS count_work,
-            (SELECT COUNT(tb_worktime.work_id) FROM tb_worktime WHERE DAYOFWEEK(tb_worktime.work_time) IN (1,7) AND tb_worktime.emp_barcode = tb_employee.emp_barcode 
-            AND (tb_worktime.work_time >= '2020-{$_REQUEST['wmonth']}-01' AND tb_worktime.work_time <= '2020-{$_REQUEST['wmonth']}-31') 
-            GROUP BY tb_worktime.emp_barcode) AS count_ot,
-            (SELECT COUNT(tb_worktime.work_id) FROM tb_worktime WHERE DAYOFWEEK(tb_worktime.work_time) IN (1,7) AND tb_worktime.emp_barcode = tb_employee.emp_barcode 
-            AND (tb_worktime.work_time >= '2020-{$_REQUEST['wmonth']}-01' AND tb_worktime.work_time <= '2020-{$_REQUEST['wmonth']}-31') AND tb_worktime.work_status = '1'
-            GROUP BY tb_worktime.emp_barcode) AS count_ot_1,
-            (SELECT COUNT(tb_worktime.work_id) FROM tb_worktime WHERE tb_worktime.emp_barcode = tb_employee.emp_barcode 
-            AND (tb_worktime.work_time >= '2020-{$_REQUEST['wmonth']}-01' AND tb_worktime.work_time <= '2020-{$_REQUEST['wmonth']}-31') AND tb_worktime.work_status = '2'
-            GROUP BY tb_worktime.emp_barcode) AS count_ot_2,
-            (SELECT COUNT(tb_worktime.work_id) FROM tb_worktime WHERE tb_worktime.emp_barcode = tb_employee.emp_barcode 
-            AND (tb_worktime.work_time >= '2020-{$_REQUEST['wmonth']}-01' AND tb_worktime.work_time <= '2020-{$_REQUEST['wmonth']}-31') AND tb_worktime.work_status = '3'
-            GROUP BY tb_worktime.emp_barcode) AS count_ot_3,
-            (SELECT SUM(tb_leave.leave_num) FROM tb_leave WHERE tb_leave.leave_type = 'sick' AND tb_leave.emp_id = tb_employee.emp_id 
-             AND tb_leave.leave_status ='approve' AND (tb_leave.leave_start >= '2020-{$_REQUEST['wmonth']}-01' AND tb_leave.leave_end <= '2020-{$_REQUEST['wmonth']}-31') GROUP BY tb_employee.emp_id) AS count_sick,
-            (SELECT SUM(tb_leave.leave_num) FROM tb_leave WHERE tb_leave.leave_type = 'busy' AND tb_leave.emp_id = tb_employee.emp_id 
-             AND tb_leave.leave_status ='approve' AND (tb_leave.leave_start >= '2020-{$_REQUEST['wmonth']}-01' AND tb_leave.leave_end <= '2020-{$_REQUEST['wmonth']}-31') GROUP BY tb_employee.emp_id) AS count_busy,
-            (SELECT SUM(tb_leave.leave_num) FROM tb_leave WHERE tb_leave.leave_type = 'vacation' AND tb_leave.emp_id = tb_employee.emp_id 
-             AND tb_leave.leave_status ='approve' AND (tb_leave.leave_start >= '2020-{$_REQUEST['wmonth']}-01' AND tb_leave.leave_end <= '2020-{$_REQUEST['wmonth']}-31') GROUP BY tb_employee.emp_id) AS count_vacation
-            FROM tb_employee
-            LEFT JOIN tb_worktime ON tb_worktime.emp_barcode = tb_employee.emp_barcode
-            LEFT JOIN tb_department ON tb_department.dept_id = tb_employee.emp_dept
-            LEFT JOIN tb_employee_job ON tb_employee_job.emp_job_id  = tb_employee.emp_job
-            WHERE tb_worktime.work_time BETWEEN '2020-{$_REQUEST['wmonth']}-01' AND '2020-{$_REQUEST['wmonth']}-31'
-            $finddept $findtype
-            GROUP BY tb_employee.emp_id
-            ORDER BY tb_department.dept_id ASC";
-    global $mysqli;
-        $obj = array();
-        $res = $mysqli->query($sql);
-        while($data = $res->fetch_assoc()){
-            $obj[] = $data;
-    }
+$thai_month_arr=array(
+    "0"=>"",
+    "1"=>"มกราคม",
+    "2"=>"กุมภาพันธ์",
+    "3"=>"มีนาคม",
+    "4"=>"เมษายน",
+    "5"=>"พฤษภาคม",
+    "6"=>"มิถุนายน", 
+    "7"=>"กรกฎาคม",
+    "8"=>"สิงหาคม",
+    "9"=>"กันยายน",
+    "10"=>"ตุลาคม",
+    "11"=>"พฤศจิกายน",
+    "12"=>"ธันวาคม"                 
+);
 ?>
 <div class="card">
     <div class="card-header card-header-tabs card-header-primary">
         <div class="nav-tabs-navigation">
             <div class="nav-tabs-wrapper">
-                <h5 class="card-title"><i class="far fa-file-alt"></i> รายงานบันทึกลงเวลาเข้างาน
-                    <span>ประจำเดือน<?=DateThai("2020-{$_REQUEST['wmonth']}-01")?></span>
-                </h5>
+                <h5 class="card-title"><i class="far fa-file-alt"></i> รายงานบันทึกลงเวลาเข้างาน</h5>
             </div>
         </div>
     </div>
     <div class="card-body">
         <?php include ('components/breadcrumb.php'); ?>
+        <form method="post">
+            เลือกเดือน
+            <select id="month_check" class="select-single" name="month_check">
+                <?php for($i=1;$i<=12;$i++){ ?>
+                <option value="<?=sprintf("%02d",$i)?>"
+                    <?=((isset($_POST['month_check']) && $_POST['month_check']==sprintf("%02d",$i)) || (!isset($_POST['month_check']) && date("m")==sprintf("%02d",$i)))?" selected":""?>>
+                    <?=$thai_month_arr[$i]?>
+                </option>
+                <?php } ?>
+            </select>
+            ปี
+            <select id="year_check" class="select-single" name="year_check">
+                <?php $data_year=intval(date("Y",strtotime("-2 year")));?>
+                <?php for($i=0;$i<=5;$i++){ ?>
+                <option value="<?=$data_year+$i?>"
+                    <?=((isset($_POST['year_check']) && $_POST['year_check']==intval($data_year+$i)) || (!isset($_POST['year_check']) && date("Y")==intval($data_year+$i)))?" selected":""?>>
+                    <?=intval($data_year+$i)+543?>
+                </option>
+                <?php } ?>
+            </select>
+            <button id="showData" name="showData" class="btn btn-sm btn-dark" type="submit"><i
+                    class="fa fa-search"></i></button>
+        </form>
         <div class="table-responsive">
-            <table id="reportTable" class="compact table table-bordered nowrap" style="width:100%;font-size:14px;">
+            <?php
+                $date_data_check=$_POST['year_check']."-".$_POST['month_check']."-";
+                $num_month_day=date("t",strtotime($_POST['year_check']."-".$_POST['month_check']."-01"));
+                $use_month_check = $date_data_check;        
+                $start_date_check = $date_data_check."01";
+                $end_date_check = $date_data_check.$num_month_day;
+
+                $sql = "SELECT *,DATE_FORMAT(work_time,'%Y-%m-%d') as date_s 
+                        FROM tb_worktime
+                        LEFT JOIN tb_employee ON tb_worktime.emp_barcode = tb_employee.emp_barcode
+                        WHERE tb_worktime.work_time >= '".$start_date_check."' AND tb_worktime.work_time <= '".$end_date_check."' ORDER BY tb_employee.emp_barcode ASC";
+                // echo $sql;
+                $result = $mysqli->query($sql);
+                if($result){
+                    while($row = $result->fetch_assoc()){
+                        if(isset($data_arr[$row['emp_name']][$row['date_s']])){
+                            $data_arr[$row['emp_name']][$row['date_s']]+=1;
+                        }else{
+                            $data_arr[$row['emp_name']][$row['date_s']]=1;
+                        }
+                    }
+                }
+            ?>
+            <table id="reportTable" class="compact table table-bordered nowrap table-striped"
+                style="width:100%;font-size:14px;">
                 <thead class="thead-light">
                     <tr>
-                        <th class="text-center">รหัส</th>
-                        <th>เจ้าหน้าที่</th>
-                        <th>ประเภท</th>
-                        <th>ฝ่ายงาน</th>
-                        <th width="5%" class="text-center">IN</th>
-                        <th width="5%" class="text-center">ป่วย</th>
-                        <th width="5%" class="text-center">กิจ</th>
-                        <th width="5%" class="text-center">พักผ่อน</th>
-                        <th width="5%" class="text-center">เช้า</th>
-                        <th width="5%" class="text-center">บ่าย</th>
-                        <th width="5%" class="text-center">ดึก</th>
-                        <!-- <th width="10%" class="text-center">หมายเหตุ</th> -->
+                        <th class="text-center">#</th>
+                        <th class="">ชื่อ-สกุล</th>
+                        <?php for($i=1;$i<=$num_month_day;$i++){?>
+                        <?php 
+                        $days = date('w', strtotime("".$_POST['year_check']."-".$_POST['month_check']."-".$i.""));
+                            if($days == 0 or $days == 6){
+                                $bg = "red";
+                                $fg = "white";
+                            }else{
+                                $bg = "";
+                                $fg = "";
+                            }
+                        ?>
+                        <th class="text-center" style="background-color:<?=$bg;?>;color:<?=$fg;?>;">
+                            <?=$i;?>
+                        </th>
+                        <?php } ?>
                     </tr>
                 </thead>
-                <?php foreach ($obj as $res){ ?>
+                <?php
+                    if($data_arr){
+                        $num = 0;
+                        $total_data = count($data_arr);
+                            foreach($data_arr as $k_item=>$v_data){
+                            $num++;
+                    ?>
                 <tr>
-                    <td class="text-center"><?=$res['emp_barcode'];?></td>
-                    <td><span><?=$res['emp_name']?></span></td>
-                    <td><span><?=$res['emp_job_name']?></span></td>
-                    <td><span><?=$res['dept_name']?></span></td>
+                    <td class="text-center"><?=$num;?></td>
+                    <td><?=$k_item?></td>
+                    <?php for($i=0;$i<$num_month_day;$i++){ ?>
                     <td class="text-center">
-                        <span class="badge badge-success btn-block" style="font-size:14px">
-                            <?php if(isset($res['count_ot'])){
-                                $works = $res['count_work'] - $res['count_ot'];
-                                echo $works;
-                            }else{
-                                echo $res['count_work'];
-                            } ?>
-                        </span>
+                        <?php
+                            $key_date = date("Y-m-d",strtotime($start_date_check." +$i day"));
+                            if(isset($v_data["$key_date"])){
+                                if($v_data["$key_date"]==1){
+                                    echo "<i class='fa fa-check text-success'></i>";
+                                }else{
+                                    echo "<i class='far fa-clock text-danger'></i>";
+                                }
+                            }
+                        ?>
                     </td>
-                    <td class="text-center">
-                        <span class="badge badge-dark btn-block" style="font-size:14px">
-                            <?=$res['count_sick']==''?'0':$res['count_sick']?>
-                        </span>
-                    </td>
-                    <td class="text-center">
-                        <span class="badge badge-dark btn-block" style="font-size:14px">
-                            <?=$res['count_busy']==''?'0':$res['count_busy']?>
-                        </span>
-                    </td>
-                    <td class="text-center">
-                        <span class="badge badge-dark btn-block" style="font-size:14px">
-                            <?=$res['count_vacation']==''?'0':$res['count_vacation']?>
-                        </span>
-                    </td>
-                    <td class="text-center">
-                        <span class="badge badge-info btn-block" style="font-size:14px">
-                            <?=$res['count_ot_1']==''?'0':$res['count_ot_1']?>
-                        </span>
-                    </td>
-                    <td class="text-center">
-                        <span class="badge badge-warning btn-block" style="font-size:14px">
-                            <?=$res['count_ot_2']==''?'0':$res['count_ot_2']?>
-                        </span>
-                    </td>
-                    <td class="text-center">
-                        <span class="badge badge-secondary btn-block" style="font-size:14px">
-                            <?=$res['count_ot_3']==''?'0':$res['count_ot_3']?>
-                        </span>
-                    </td>
-                    <!-- <td class="text-center">
-                        <?php if($count >= 15 && $res['emp_job_id'] <> 5){ 
-                                echo "<span class='text-success'><i class='fa fa-check-circle'></i> ได้เบี้ย ฉ.11</span>"; }else{
-                                echo "<a href='#' class='text-danger' data-toggle='tooltip' data-placement='top' title='เวลาทำงานรวมไปถึง 15 วัน'><i class='fa fa-ban'></i> ไม่ได้เบี้ย ฉ.11</a>";} 
-                            ?>
-                    </td> -->
+                    <?php } ?>
                 </tr>
-                <?php } ?>
+                <?php } } ?>
             </table>
+            <i class='fa fa-check text-success'></i> : เข้างานปกติ / เวรเช้า <br>
+            <i class='far fa-clock text-danger'></i> : ขึ้นเวร / OT (เวรบ่าย , เวรดึก)
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        $('.select-single').select2({
+            width: '10%'
+        });
+    });
+</script>

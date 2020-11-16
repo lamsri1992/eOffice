@@ -12,7 +12,7 @@
         <?php include ('components/breadcrumb.php'); ?>
         <div class="col-md-12">
             <div class="row">
-                <div class="col-md-10 text-right"></div>
+                <div class="col-md-8 text-right"></div>
                 <?php if(isset($empSession['privilege_hr'])){ ?>
                 <div class="col-md-2">
                     <button class="btn btn-danger btn-block" data-toggle="modal" data-target="#rule">
@@ -20,9 +20,13 @@
                     </button>
                 </div>
                 <?php } ?>
+                <div class="col-md-2">
+                    <a href="?menu=Worktime-Report" class="btn btn-info btn-block">
+                        แสดงรูปแบบตารางเวร
+                    </a>
+                </div>
             </div>
         </div>
-        <?php include ('pages/worktime/worktime_form.php'); ?>
         <?php include ('pages/worktime/worktime_table.php'); ?>
     </div>
 </div>
@@ -65,71 +69,71 @@
 </div>
 
 <script>
-$(function() {
-    $('[data-toggle="tooltip"]').tooltip()
-})
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 
-// datePicker
-$(function() {
-    $.datetimepicker.setLocale('th');
-    $("#dateSave").datetimepicker({
-        format: 'Y/m/d H:i',
-        allowTimes: [
-            '08:45', '13:00', '16:45', '23:45'
-        ],
-        timepicker: true,
-        lang: 'th',
-    });
-});
-
-// autocomplete
-function make_autocom(autoObj, showObj) {
-    var mkAutoObj = autoObj;
-    var mkSerValObj = showObj;
-    new Autocomplete(mkAutoObj, function() {
-        this.setValue = function(id) {
-            document.getElementById(mkSerValObj).value = id;
-        }
-        if (this.isModified)
-            this.setValue("");
-        if (this.value.length < 1 && this.isNotClick)
-            return;
-        return "api/json_employee_code.php?q=" + encodeURIComponent(this.value);
-    });
-}
-make_autocom("empname", "empcode");
-
-// sweetalert + confirm add data
-$('#addWork').on("submit", function(event) {
-    event.preventDefault();
-    swal({
-            title: "ยืนยันการบันทึกเวลาเข้างาน ?",
-            icon: "warning",
-            dangerMode: true,
-            buttons: true,
-        })
-        .then((createCnf) => {
-            if (createCnf) {
-                document.getElementById("btnSave").disabled = true;
-                $.ajax({
-                    url: "pages/worktime/worktime_query.php",
-                    method: "POST",
-                    data: $('#addWork').serialize(),
-                    success: function(data) {
-                        swal('Success!',
-                            'บันทึกเวลาเข้างานสำเร็จ',
-                            'success', {
-                                closeOnClickOutside: false,
-                                closeOnEsc: false,
-                                buttons: false,
-                                timer: 3000,
-                            });
-                        window.setTimeout(function() {
-                            location.replace('?menu=e-Worktime')
-                        }, 1500);
-                    }
-                });
-            }
+    // datePicker
+    $(function () {
+        $.datetimepicker.setLocale('th');
+        $("#dateSave").datetimepicker({
+            format: 'Y/m/d H:i',
+            allowTimes: [
+                '08:45', '13:00', '16:45', '23:45'
+            ],
+            timepicker: true,
+            lang: 'th',
         });
-});
+    });
+
+    // autocomplete
+    function make_autocom(autoObj, showObj) {
+        var mkAutoObj = autoObj;
+        var mkSerValObj = showObj;
+        new Autocomplete(mkAutoObj, function () {
+            this.setValue = function (id) {
+                document.getElementById(mkSerValObj).value = id;
+            }
+            if (this.isModified)
+                this.setValue("");
+            if (this.value.length < 1 && this.isNotClick)
+                return;
+            return "api/json_employee_code.php?q=" + encodeURIComponent(this.value);
+        });
+    }
+    make_autocom("empname", "empcode");
+
+    // sweetalert + confirm add data
+    $('#addWork').on("submit", function (event) {
+        event.preventDefault();
+        swal({
+                title: "ยืนยันการบันทึกเวลาเข้างาน ?",
+                icon: "warning",
+                dangerMode: true,
+                buttons: true,
+            })
+            .then((createCnf) => {
+                if (createCnf) {
+                    document.getElementById("btnSave").disabled = true;
+                    $.ajax({
+                        url: "pages/worktime/worktime_query.php",
+                        method: "POST",
+                        data: $('#addWork').serialize(),
+                        success: function (data) {
+                            swal('Success!',
+                                'บันทึกเวลาเข้างานสำเร็จ',
+                                'success', {
+                                    closeOnClickOutside: false,
+                                    closeOnEsc: false,
+                                    buttons: false,
+                                    timer: 3000,
+                                });
+                            window.setTimeout(function () {
+                                location.replace('?menu=e-Worktime')
+                            }, 1500);
+                        }
+                    });
+                }
+            });
+    });
 </script>

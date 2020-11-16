@@ -84,11 +84,12 @@ $(document).ready(function() {
 $(document).ready(function() {
     var table = $('#reportTable').DataTable({
         responsive: true,
-        "pageLength": 20,
-        "lengthMenu": [
+        pageLength: 20,
+        lengthMenu: [
             [20, 50, 100, -1],
             [20, 50, 100, "All"]
         ],
+        ordering: false,
         dom: 'Bfrtip',
         buttons: [{
             extend: 'excel',
