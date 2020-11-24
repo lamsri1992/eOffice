@@ -21,7 +21,7 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label">แผนก/กลุ่มงาน</label>
                         <div class="col-md-12">
-                            <select name="dept" class="form-control input-md" required>
+                            <select name="dept" class="custom-select" required>
                                 <option value="">เลือกแผนก/กลุ่มงาน</option>
                                 <?php
 									foreach ($fetchDept as $ds){
@@ -33,7 +33,7 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label">ประเภทบุคลากร</label>
                         <div class="col-md-12">
-                            <select name="empjob" class="form-control input-md" required>
+                            <select name="empjob" class="custom-select" required>
                                 <option value="">เลือกประเภท</option>
                                 <?php
 									foreach ($fetchJob as $js){

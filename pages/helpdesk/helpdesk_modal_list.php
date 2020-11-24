@@ -68,7 +68,7 @@ $resUnderTaker = $leave->getUndertaker();
                 <div class="form-group row">
                     <label class="col-md-12 control-label">สถานะการซ่อม</label>
                     <div class="col-md-12">
-                        <select name="status" class="form-control input-md" required>
+                        <select name="status" class="custom-select" required>
                             <option value="">เลือกสถานะการซ่อม</option>
                             <option value="success" <?php if ($data['help_status']=="success"){ echo 'SELECTED'; } ?>>-
                                 สำเร็จ</option>

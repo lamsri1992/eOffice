@@ -34,7 +34,7 @@
                     <div class="form-group row">
                         <label class="col-md-12 control-label">ประเภทการลา</label>
                         <div class="col-md-12">
-                            <select name="ltype" class="js-single" required>
+                            <select name="ltype" class="custom-select" required>
                                 <option value="">เลือกประเภทการลา</option>
                                 <option value="sick">- ลาป่วย</option>
                                 <option value="busy">- ลากิจ</option>
@@ -45,7 +45,7 @@
                     <div class="form-group row">
                         <label class="col-md-12 control-label">ระยะเวลา</label>
                         <div class="col-md-12">
-                            <select name="ltime" class="js-single" required>
+                            <select name="ltime" class="custom-select" required>
                                 <option value="">เลือกระยะเวลา</option>
                                 <option value="full">- เต็มวัน (8.00น. - 16.00น.)</option>
                                 <option value="half_m">- ครึ่งเช้า (8:00น. - 12:00น.)</option>
