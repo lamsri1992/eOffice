@@ -28,7 +28,7 @@ if($_REQUEST['wtype']==0){$findtype="";}else{$findtype="AND tb_employee.emp_job 
             WHERE tb_worktime.work_time BETWEEN '2020-{$_REQUEST['wmonth']}-01' AND '2020-{$_REQUEST['wmonth']}-31'
             $finddept $findtype
             GROUP BY tb_employee.emp_id
-            ORDER BY tb_department.dept_id ASC";
+            ORDER BY tb_department.dept_id,tb_employee.emp_barcode ASC";
     global $mysqli;
         $obj = array();
         $res = $mysqli->query($sql);

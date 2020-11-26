@@ -10,28 +10,31 @@
     </div>
     <div class="card-body">
         <?php include ('components/breadcrumb.php'); ?>
-        <div class="col-md-12">
-            <div class="row">
-                <div class="col-md-8 text-right"></div>
-                <?php if(isset($empSession['privilege_hr'])){ ?>
-                <div class="col-md-2">
-                    <button class="btn btn-danger btn-block" data-toggle="modal" data-target="#rule">
-                        ลงบันทึกเวลาพิเศษ
-                    </button>
-                </div>
-                <?php } ?>
-                <div class="col-md-2">
-                    <a href="?menu=Worktime-Report" class="btn btn-info btn-block">
-                        แสดงรูปแบบตารางเวร
-                    </a>
-                </div>
+        <div class="row" style="padding-bottom:1%;">
+            <div class="col-md-6"><span class="btn btn-success btn-block">เมนูระบบบันทึกเวลาเข้างาน</span></div>
+            <?php if(isset($empSession['privilege_hr'])){ ?>
+            <div class="col-md-2">
+                <button class="btn btn-danger btn-block" data-toggle="modal" data-target="#rule">
+                    ลงบันทึกเวลาพิเศษ
+                </button>
+            </div>
+            <?php } ?>
+            <div class="col-md-2">
+                <a href="?menu=Worktime-Report" class="btn btn-info btn-block">
+                    แสดงรูปแบบตารางเวร
+                </a>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-dark btn-block" data-toggle="modal" data-target="#report">
+                    รายงานบันทึกเวลาทำงาน
+                </button>
             </div>
         </div>
         <?php include ('pages/worktime/worktime_table.php'); ?>
     </div>
 </div>
 
-<!-- Modal -->
+<!-- Modal Special Add Time -->
 <div class="modal fade" id="rule" tabindex="-1" role="dialog" aria-labelledby="ruleLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -61,7 +64,67 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" id="btnSave" class="btn btn-primary"><i class="fa fa-save"></i>
-                        บันทึกเวลา</button>
+                        บันทึกเวลา
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Report -->
+<div class="modal fade" id="report" tabindex="-1" role="dialog" aria-labelledby="reportLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reportLabel">รายงานบันทึกเวลาทำงาน</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="filter" action="?menu=Worktime-Summary" method="post">
+                <div class="modal-body">
+                    <h5><i class="fa fa-search"></i> Filter Report</h5>
+                    <div class="form-row">
+                        <div class="col-md-3">
+                            <label>เลือกเดือน</label>
+                            <select name="wmonth" class="custom-select" required>
+                                <option value="" selected>เลือกเดือน</option>
+                                <option value="01">- มกราคม</option>
+                                <option value="02">- กุมภาพันธ์</option>
+                                <option value="03">- มีนาคม</option>
+                                <option value="04">- เมษายน</option>
+                                <option value="05">- พฤษภาคม</option>
+                                <option value="06">- มิถุนายน</option>
+                                <option value="07">- กรกฏาคม</option>
+                                <option value="08">- สิงหาคม</option>
+                                <option value="09">- กันยายน</option>
+                                <option value="10">- ตุลาคม</option>
+                                <option value="11">- พฤศจิกายน</option>
+                                <option value="12">- ธันวาคม</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label>เลือกฝ่าย/กลุ่มงาน</label>
+                            <select name="wdept" class="custom-select" required>
+                                <option value="0" selected>เลือกทั้งหมด</option>
+                                <?php foreach ($fetchDept as $ds){ echo "<option value='".$ds['dept_id']."'> - ".$ds['dept_name']."</option>";} ?>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label>เลือกประเภทบุคลากร</label>
+                            <select name="wtype" class="custom-select" required>
+                                <option value="0" selected>เลือกทั้งหมด</option>
+                                <?php foreach ($fetchJob as $js){ echo "<option value='".$js['emp_job_id']."'> - ".$js['emp_job_name']."</option>";} ?>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label></label>
+                            <button type="submit" class="btn btn-block btn-default">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>

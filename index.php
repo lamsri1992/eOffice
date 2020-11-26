@@ -53,6 +53,7 @@
                             <?php if ($menu=='e-Supplies'){ include ('pages/supplies/index.php'); } ?>
                             <?php if ($menu=='e-Worktime'){ include ('pages/worktime/index.php'); } ?>
                             <?php if ($menu=='Worktime-Report'){ include ('pages/worktime/worktime_report.php'); } ?>
+                            <?php if ($menu=='Worktime-Summary'){ include ('pages/worktime/worktime_report_summary.php'); } ?>
                         </div>
                     </div>
                 </div>
