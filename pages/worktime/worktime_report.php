@@ -142,6 +142,12 @@ $thai_month_arr=array(
                 </tr>
                 <?php } } ?>
             </table>
+            <span class='badge badge-success' style='font-size:14px;'>ช</span> : เวรเช้า / เข้างานปกติ ,
+            <span class='badge badge-primary' style='font-size:14px;'>บ</span> : เวรบ่าย (16.00 - 23.00) ,
+            <span class='badge badge-dark' style='font-size:14px;'>ช/บ</span> : เวรเช้า - บ่าย (08.00 - 23.00) , <br>
+            <span class='badge badge-danger' style='font-size:14px;'>ด</span> : เวรดึก (23.00 - 08.00) ,
+            <span class='badge badge-info' style='font-size:14px;'>ช/ด</span> : เวรเช้า - ดึก (08.00-16.00 + 23.00-08-00) ,
+            <span class='badge badge-warning' style='font-size:14px;'>ช/บ/ด</span> : เวรเช้า - บ่าย - ดึก (08.00 - 08.00 ของอีกวัน)
         </div>
     </div>
 </div>

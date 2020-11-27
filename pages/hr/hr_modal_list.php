@@ -1,18 +1,22 @@
 <?php
+session_start();
 include ('../../config/database.php');
 include ('../../config/exdate.class.php');
 include ('../../api/hr.class.php');
 include ('../../api/leave.class.php');
+include ('../../api/user.class.php');
 
 $id = $_REQUEST['id'];
 $mysqli = connect();
 $hr = new hr();
 $leaves = new leave();
+$user = new user();
 $data = $hr->editEmployee($id);
 $dep = $hr->getDepartment();
 $job = $hr->getJob();
 $leave = $hr->getEmployeeLeave($id);
 $resCount = $leaves->leaveCount($id);
+$empSession = $user->getUser($_SESSION['employee']);
 ?>
 <div class="modal-content">
     <div class="modal-body">
@@ -112,11 +116,13 @@ $resCount = $leaves->leaveCount($id);
                                                 <?=@$vis?> required>
                                         </div>
                                     </div>
+                                    <?php if(isset($empSession['privilege_hr'])){ ?>
                                     <div class="form-group text-right">
                                         <button type="submit" class="btn btn-info"><i class="fa fa-save"></i>
                                             บันทึกการแก้ไข
                                         </button>
                                     </div>
+                                    <?php } ?>
                                 </form>
                             </div>
                             <div class="tab-pane" id="leave">
@@ -234,105 +240,105 @@ $resCount = $leaves->leaveCount($id);
 </div>
 
 <script>
-// Edit Employee Data
-$('#frmEdit').on("submit", function(event) {
-    event.preventDefault();
-    swal({
-            title: "แก้ไขข้อมูล ?",
-            text: "ยืนยันแก้ไขข้อมูลของ <?=$data['emp_name']?>",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-        .then((createCnf) => {
-            if (createCnf) {
-                $.ajax({
-                    url: "pages/hr/hr_query.php?op=edit&id=<?=$data['emp_id']?>",
-                    method: "POST",
-                    data: $('#frmEdit').serialize(),
-                    success: function(data) {
-                        swal('Success!',
-                            'แก้ไขข้อมูลแล้ว',
-                            'success', {
-                                closeOnClickOutside: false,
-                                closeOnEsc: false,
-                                buttons: false,
-                                timer: 3000,
-                            });
-                        window.setTimeout(function() {
-                            location.replace('?menu=e-Employee')
-                        }, 2000);
-                    }
-                });
-            }
-        });
-});
+    // Edit Employee Data
+    $('#frmEdit').on("submit", function (event) {
+        event.preventDefault();
+        swal({
+                title: "แก้ไขข้อมูล ?",
+                text: "ยืนยันแก้ไขข้อมูลของ <?=$data['emp_name']?>",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((createCnf) => {
+                if (createCnf) {
+                    $.ajax({
+                        url: "pages/hr/hr_query.php?op=edit&id=<?=$data['emp_id']?>",
+                        method: "POST",
+                        data: $('#frmEdit').serialize(),
+                        success: function (data) {
+                            swal('Success!',
+                                'แก้ไขข้อมูลแล้ว',
+                                'success', {
+                                    closeOnClickOutside: false,
+                                    closeOnEsc: false,
+                                    buttons: false,
+                                    timer: 3000,
+                                });
+                            window.setTimeout(function () {
+                                location.replace('?menu=e-Employee')
+                            }, 2000);
+                        }
+                    });
+                }
+            });
+    });
 
-// Add Employee Leave
-$('#leaveAdd').on("submit", function(event) {
-    event.preventDefault();
-    swal({
-            title: "เพิ่มข้อมูลวันลา ?",
-            text: "ยืนยันเพิ่มข้อมูลวันลาของ <?=$data['emp_barcode'].": ".$data['emp_name']?>",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-        .then((createCnf) => {
-            if (createCnf) {
-                $.ajax({
-                    url: "pages/hr/hr_query.php?op=addLeave&id=<?=$data['emp_id']?>",
-                    method: "POST",
-                    data: $('#leaveAdd').serialize(),
-                    success: function(data) {
-                        swal('Success!',
-                            'เพิ่มข้อมูลวันลาแล้ว',
-                            'success', {
-                                closeOnClickOutside: false,
-                                closeOnEsc: false,
-                                buttons: false,
-                                timer: 3000,
-                            });
-                        window.setTimeout(function() {
-                            location.replace('?menu=e-Employee')
-                        }, 2000);
-                    }
-                });
-            }
-        });
-});
+    // Add Employee Leave
+    $('#leaveAdd').on("submit", function (event) {
+        event.preventDefault();
+        swal({
+                title: "เพิ่มข้อมูลวันลา ?",
+                text: "ยืนยันเพิ่มข้อมูลวันลาของ <?=$data['emp_barcode'].": ".$data['emp_name']?>",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((createCnf) => {
+                if (createCnf) {
+                    $.ajax({
+                        url: "pages/hr/hr_query.php?op=addLeave&id=<?=$data['emp_id']?>",
+                        method: "POST",
+                        data: $('#leaveAdd').serialize(),
+                        success: function (data) {
+                            swal('Success!',
+                                'เพิ่มข้อมูลวันลาแล้ว',
+                                'success', {
+                                    closeOnClickOutside: false,
+                                    closeOnEsc: false,
+                                    buttons: false,
+                                    timer: 3000,
+                                });
+                            window.setTimeout(function () {
+                                location.replace('?menu=e-Employee')
+                            }, 2000);
+                        }
+                    });
+                }
+            });
+    });
 
-// Edit Employee Leave
-$('#leaveEdit').on("submit", function(event) {
-    event.preventDefault();
-    swal({
-            title: "แก้ไขข้อมูลวันลา ?",
-            text: "ยืนยันแก้ไขข้อมูลวันลาของ <?=$data['emp_barcode'].": ".$data['emp_name']?>",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-        .then((createCnf) => {
-            if (createCnf) {
-                $.ajax({
-                    url: "pages/hr/hr_query.php?op=editLeave&id=<?=$data['emp_id']?>",
-                    method: "POST",
-                    data: $('#leaveEdit').serialize(),
-                    success: function(data) {
-                        swal('Success!',
-                            'แก้ไขข้อมูลวันลาแล้ว',
-                            'success', {
-                                closeOnClickOutside: false,
-                                closeOnEsc: false,
-                                buttons: false,
-                                timer: 3000,
-                            });
-                        window.setTimeout(function() {
-                            location.replace('?menu=e-Employee')
-                        }, 2000);
-                    }
-                });
-            }
-        });
-});
+    // Edit Employee Leave
+    $('#leaveEdit').on("submit", function (event) {
+        event.preventDefault();
+        swal({
+                title: "แก้ไขข้อมูลวันลา ?",
+                text: "ยืนยันแก้ไขข้อมูลวันลาของ <?=$data['emp_barcode'].": ".$data['emp_name']?>",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((createCnf) => {
+                if (createCnf) {
+                    $.ajax({
+                        url: "pages/hr/hr_query.php?op=editLeave&id=<?=$data['emp_id']?>",
+                        method: "POST",
+                        data: $('#leaveEdit').serialize(),
+                        success: function (data) {
+                            swal('Success!',
+                                'แก้ไขข้อมูลวันลาแล้ว',
+                                'success', {
+                                    closeOnClickOutside: false,
+                                    closeOnEsc: false,
+                                    buttons: false,
+                                    timer: 3000,
+                                });
+                            window.setTimeout(function () {
+                                location.replace('?menu=e-Employee')
+                            }, 2000);
+                        }
+                    });
+                }
+            });
+    });
 </script>
