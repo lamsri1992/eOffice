@@ -37,12 +37,14 @@ if($op == 'update'){
     $cause = mysqli_real_escape_string($mysqli,$_REQUEST['cause']);
     $fix = mysqli_real_escape_string($mysqli,$_REQUEST['fix']);
     $status = mysqli_real_escape_string($mysqli,$_REQUEST['status']);
+    $type = mysqli_real_escape_string($mysqli,$_REQUEST['type']);
     $support = mysqli_real_escape_string($mysqli,$_REQUEST['support']);
     $end = date("Y-m-d H:i:s");
     $data = array(
         "help_cause"=>$cause,
         "help_fix"=>$fix,
         "help_status"=>$status,
+        "help_type"=>$type,
         "help_support"=>$support,
         "help_end"=>$end
     );

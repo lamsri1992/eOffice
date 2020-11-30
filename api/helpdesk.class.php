@@ -42,6 +42,17 @@ Class Helpdesk {
         }
     return $obj;
     }
+
+    function getHelpType(){
+        $sql = "SELECT * FROM tb_helpdesk_type";
+        global $mysqli;
+        $obj = array();
+        $res = $mysqli->query($sql);
+        while($data = $res->fetch_assoc()) {
+            $obj[] = $data;
+        }
+    return $obj;
+    }
     
 }
 

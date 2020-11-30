@@ -19,6 +19,7 @@ $dep = $hr->getDepartment();
 $job = $hr->getJob();
 $empSession = $user->getUser($_SESSION['employee']);
 $resUnderTaker = $leave->getUndertaker();
+$type = $helpdesk->getHelpType();
 ?>
 <div class="modal-content">
     <div class="modal-header">
@@ -71,11 +72,28 @@ $resUnderTaker = $leave->getUndertaker();
                         <select name="status" class="custom-select" required>
                             <option value="">เลือกสถานะการซ่อม</option>
                             <option value="success" <?php if ($data['help_status']=="success"){ echo 'SELECTED'; } ?>>-
-                                สำเร็จ</option>
+                                สำเร็จ
+                            </option>
                             <option value="repair" <?php if ($data['help_status']=="repair"){ echo 'SELECTED'; } ?>>-
-                                ส่งซ่อม</option>
+                                ส่งซ่อม
+                            </option>
                             <option value="spares" <?php if ($data['help_status']=="spares"){ echo 'SELECTED'; } ?>>-
-                                รออะไหล่</option>
+                                รออะไหล่
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-12 control-label">ประเภทการซ่อม</label>
+                    <div class="col-md-12">
+                        <select name="type" class="custom-select" required>
+                            <option value="">เลือกประเภทการซ่อม</option>
+                            <?php foreach ($type AS $ts){ ?>
+                            <option value="<?=$ts['helpdesk_type_id']?>"
+                                <?php if ($data['help_type']==$ts['helpdesk_type_id']){ echo 'SELECTED'; } ?>>
+                                - <?=$ts['helpdesk_type_name']?>
+                            </option>
+                            <?php } ?>
                         </select>
                     </div>
                 </div>
@@ -84,7 +102,7 @@ $resUnderTaker = $leave->getUndertaker();
                         <tr>
                             <th width="20%">ผู้ดำเนินการ</th>
                             <td>
-                            <?php 
+                                <?php 
                             foreach ($resUnderTaker AS $name){ 
                                 if ($data['help_support']==$name['emp_id']){ echo "<span>".$name['emp_name']."</span>"; } 
                             } ?>
@@ -97,7 +115,7 @@ $resUnderTaker = $leave->getUndertaker();
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <?php if($data['help_status']=='success'){$btn="hidden";}else{$btn="";} ?>
+                    <?php if($data['help_status']=='success' && isset($data['help_type'])){$btn="hidden";}else{$btn="";} ?>
                     <button type="submit" id="btnSave" class="btn btn-success btn-sm" <?=$btn?>>
                         <i class="fa fa-save"></i> บันทึกการแจ้งซ่อม
                     </button>
@@ -157,70 +175,70 @@ $resUnderTaker = $leave->getUndertaker();
 </div>
 
 <script>
-// Fix List
-$('#frmEdit').on("submit", function(event) {
-    event.preventDefault();
-    swal({
-            title: "บันทึกรายการซ่อม ?",
-            text: "ยืนยันบันทึกรายการซ่อม <?="IT - ".$data['help_id']?>",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-        .then((createCnf) => {
-            if (createCnf) {
-                $.ajax({
-                    url: "pages/helpdesk/helpdesk_query.php?op=update&id=<?=$data['help_id']?>",
-                    method: "POST",
-                    data: $('#frmEdit').serialize(),
-                    success: function(data) {
-                        swal('Success!',
-                            'บันทึกข้อมูลแล้ว',
-                            'success', {
-                                closeOnClickOutside: false,
-                                closeOnEsc: false,
-                                buttons: false,
-                                timer: 3000,
-                            });
-                        window.setTimeout(function() {
-                            location.replace('?menu=e-Helpdesk')
-                        }, 2000);
-                    }
-                });
-            }
-        });
-});
-// Rate List
-$('#frmRate').on("submit", function(event) {
-    event.preventDefault();
-    swal({
-            title: "บันทึกการประเมิณ ?",
-            text: "ยืนยันบันทึกการประเมิณ <?="IT - ".$data['help_id']?>",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-        .then((createCnf) => {
-            if (createCnf) {
-                $.ajax({
-                    url: "pages/helpdesk/helpdesk_query.php?op=rate&id=<?=$data['help_id']?>",
-                    method: "POST",
-                    data: $('#frmRate').serialize(),
-                    success: function(data) {
-                        swal('Success!',
-                            'บันทึกข้อมูลแล้ว',
-                            'success', {
-                                closeOnClickOutside: false,
-                                closeOnEsc: false,
-                                buttons: false,
-                                timer: 3000,
-                            });
-                        window.setTimeout(function() {
-                            location.replace('?menu=e-Helpdesk')
-                        }, 2000);
-                    }
-                });
-            }
-        });
-});
+    // Fix List
+    $('#frmEdit').on("submit", function (event) {
+        event.preventDefault();
+        swal({
+                title: "บันทึกรายการซ่อม ?",
+                text: "ยืนยันบันทึกรายการซ่อม <?="IT - ".$data['help_id']?>",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((createCnf) => {
+                if (createCnf) {
+                    $.ajax({
+                        url: "pages/helpdesk/helpdesk_query.php?op=update&id=<?=$data['help_id']?>",
+                        method: "POST",
+                        data: $('#frmEdit').serialize(),
+                        success: function (data) {
+                            swal('Success!',
+                                'บันทึกข้อมูลแล้ว',
+                                'success', {
+                                    closeOnClickOutside: false,
+                                    closeOnEsc: false,
+                                    buttons: false,
+                                    timer: 3000,
+                                });
+                            window.setTimeout(function () {
+                                location.replace('?menu=e-Helpdesk')
+                            }, 2000);
+                        }
+                    });
+                }
+            });
+    });
+    // Rate List
+    $('#frmRate').on("submit", function (event) {
+        event.preventDefault();
+        swal({
+                title: "บันทึกการประเมิณ ?",
+                text: "ยืนยันบันทึกการประเมิณ <?="IT - ".$data['help_id']?>",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((createCnf) => {
+                if (createCnf) {
+                    $.ajax({
+                        url: "pages/helpdesk/helpdesk_query.php?op=rate&id=<?=$data['help_id']?>",
+                        method: "POST",
+                        data: $('#frmRate').serialize(),
+                        success: function (data) {
+                            swal('Success!',
+                                'บันทึกข้อมูลแล้ว',
+                                'success', {
+                                    closeOnClickOutside: false,
+                                    closeOnEsc: false,
+                                    buttons: false,
+                                    timer: 3000,
+                                });
+                            window.setTimeout(function () {
+                                location.replace('?menu=e-Helpdesk')
+                            }, 2000);
+                        }
+                    });
+                }
+            });
+    });
 </script>
